@@ -1,0 +1,63 @@
+{
+  "name": "kumwe/access-context",
+  "description": "Immutable Kumwe access-context values and actor contracts, supplied explicitly to every use case.",
+  "type": "library",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/kumwe/access-context",
+  "support": {
+    "issues": "https://github.com/kumwe/access-context/issues",
+    "source": "https://github.com/kumwe/access-context"
+  },
+  "require": {
+    "php": "^8.5"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-deprecation-rules": "^2.0",
+    "phpstan/phpstan-strict-rules": "^2.0",
+    "squizlabs/php_codesniffer": "^4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kumwe\\Context\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kumwe\\Context\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "composer:validate": "composer validate --strict",
+    "lint": "php tools/lint.php",
+    "lines": "php tools/check-lines.php",
+    "docs": "php tools/check-docblocks.php",
+    "architecture": "php tools/verify-architecture.php",
+    "api": "php tools/verify-public-api.php",
+    "api:record": "php tools/verify-public-api.php --write",
+    "manifests": "php tools/verify-manifests.php",
+    "autoload:smoke": "php resources/toolchain/autoload-smoke.php",
+    "cs": "phpcs -q",
+    "cs:fix": "phpcbf",
+    "analyse": "phpstan analyse --no-progress --memory-limit=1G",
+    "test": "php tests/run.php",
+    "check": [
+      "@composer:validate",
+      "@lint",
+      "@lines",
+      "@docs",
+      "@architecture",
+      "@api",
+      "@manifests",
+      "@autoload:smoke",
+      "@cs",
+      "@analyse",
+      "@test"
+    ]
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
