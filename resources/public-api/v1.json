@@ -1,0 +1,966 @@
+{
+    "schema": "kumwe-package-public-api/v1",
+    "package": "kumwe/access-context",
+    "release": "0.1.0",
+    "namespace": "Kumwe\\Context\\",
+    "symbols": {
+        "Kumwe\\Context\\Contract\\Principal": {
+            "kind": "interface",
+            "stability": "stable",
+            "file": "src/Contract/Principal.php",
+            "abstract": false,
+            "final": false,
+            "readonly": false,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "authorityFingerprint": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "authorizationFingerprint": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "hasProvenance": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "provenance",
+                            "type": "object",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "bool"
+                },
+                "securityEpoch": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "int"
+                },
+                "subject": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Contract\\SystemActor": {
+            "kind": "interface",
+            "stability": "stable",
+            "file": "src/Contract/SystemActor.php",
+            "abstract": false,
+            "final": false,
+            "readonly": false,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "identifier": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Exception\\InvalidContext": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/Exception/InvalidContext.php",
+            "abstract": false,
+            "final": true,
+            "readonly": false,
+            "parent": "InvalidArgumentException",
+            "interfaces": [
+                "Stringable",
+                "Throwable"
+            ],
+            "constants": {},
+            "properties": {},
+            "methods": {},
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Value\\AuthenticatedSurface": {
+            "kind": "enum",
+            "stability": "stable",
+            "file": "src/Value/AuthenticatedSurface.php",
+            "abstract": false,
+            "final": true,
+            "readonly": false,
+            "parent": null,
+            "interfaces": [],
+            "constants": {
+                "Administrator": {
+                    "type": "string"
+                },
+                "Api": {
+                    "type": "string"
+                },
+                "Background": {
+                    "type": "string"
+                },
+                "Cli": {
+                    "type": "string"
+                },
+                "Mcp": {
+                    "type": "string"
+                },
+                "Portal": {
+                    "type": "string"
+                },
+                "Recovery": {
+                    "type": "string"
+                }
+            },
+            "properties": {},
+            "methods": {},
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Value\\AuthenticationStrength": {
+            "kind": "enum",
+            "stability": "stable",
+            "file": "src/Value/AuthenticationStrength.php",
+            "abstract": false,
+            "final": true,
+            "readonly": false,
+            "parent": null,
+            "interfaces": [],
+            "constants": {
+                "BearerToken": {
+                    "type": "string"
+                },
+                "MultiFactor": {
+                    "type": "string"
+                },
+                "Password": {
+                    "type": "string"
+                },
+                "System": {
+                    "type": "string"
+                }
+            },
+            "properties": {},
+            "methods": {
+                "isHuman": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "bool"
+                },
+                "satisfies": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "required",
+                            "type": "Kumwe\\Context\\Value\\AuthenticationStrength",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "bool"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Value\\ExecutionContext": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/Value/ExecutionContext.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "actorId": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "approvalFingerprint": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "authenticationStrength": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "Kumwe\\Context\\Value\\AuthenticationStrength"
+                },
+                "authorizationFingerprint": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "child": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "requestId",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "correlationId",
+                            "type": "?string",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Context\\Value\\ExecutionContext"
+                },
+                "correlationId": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "deliverySurface": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "hasProvenance": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "provenance",
+                            "type": "object",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "bool"
+                },
+                "isSystem": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "bool"
+                },
+                "issueHuman": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "provenance",
+                            "type": "object",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "principal",
+                            "type": "Kumwe\\Context\\Contract\\Principal",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "site",
+                            "type": "Kumwe\\Context\\Value\\SiteContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "authenticationStrength",
+                            "type": "Kumwe\\Context\\Value\\AuthenticationStrength",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "requestId",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "correlationId",
+                            "type": "?string",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "surface",
+                            "type": "?Kumwe\\Context\\Value\\AuthenticatedSurface",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "membership",
+                            "type": "?Kumwe\\Context\\Value\\MembershipContext",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "sessionId",
+                            "type": "?string",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "stepUpProof",
+                            "type": "?Kumwe\\Context\\Value\\StepUpProof",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Context\\Value\\ExecutionContext"
+                },
+                "issueSystem": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "provenance",
+                            "type": "object",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "actor",
+                            "type": "Kumwe\\Context\\Contract\\SystemActor",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "site",
+                            "type": "Kumwe\\Context\\Value\\SiteContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "requestId",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "correlationId",
+                            "type": "?string",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Context\\Value\\ExecutionContext"
+                },
+                "membership": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?Kumwe\\Context\\Value\\MembershipContext"
+                },
+                "organization": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?Kumwe\\Context\\Value\\OrganizationContext"
+                },
+                "organizationIdentifier": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?string"
+                },
+                "principal": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?Kumwe\\Context\\Contract\\Principal"
+                },
+                "requestId": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "sessionId": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?string"
+                },
+                "site": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "Kumwe\\Context\\Value\\SiteContext"
+                },
+                "siteIdentifier": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "stepUpProof": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?Kumwe\\Context\\Value\\StepUpProof"
+                },
+                "surface": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "Kumwe\\Context\\Value\\AuthenticatedSurface"
+                },
+                "systemActor": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?Kumwe\\Context\\Contract\\SystemActor"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "workspace": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?Kumwe\\Context\\Value\\WorkspaceContext"
+                },
+                "workspaceIdentifier": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?string"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Value\\MembershipContext": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/Value/MembershipContext.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "membershipId",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "organization",
+                            "type": "Kumwe\\Context\\Value\\OrganizationContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "workspace",
+                            "type": "?Kumwe\\Context\\Value\\WorkspaceContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "membershipVersion",
+                            "type": "int",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "policyGeneration",
+                            "type": "int",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "equals": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "other",
+                            "type": "Kumwe\\Context\\Value\\MembershipContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "bool"
+                },
+                "fingerprint": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "membershipId": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "membershipVersion": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "int"
+                },
+                "organization": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "Kumwe\\Context\\Value\\OrganizationContext"
+                },
+                "policyGeneration": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "int"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "workspace": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?Kumwe\\Context\\Value\\WorkspaceContext"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Value\\OrganizationContext": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/Value/OrganizationContext.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "equals": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "other",
+                            "type": "Kumwe\\Context\\Value\\OrganizationContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "bool"
+                },
+                "fromString": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "identifier",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Context\\Value\\OrganizationContext"
+                },
+                "identifier": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Value\\SiteContext": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/Value/SiteContext.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {
+                "DEFAULT": {
+                    "type": "string"
+                }
+            },
+            "properties": {},
+            "methods": {
+                "default": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [],
+                    "return": "Kumwe\\Context\\Value\\SiteContext"
+                },
+                "equals": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "other",
+                            "type": "Kumwe\\Context\\Value\\SiteContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "bool"
+                },
+                "fromString": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "identifier",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Context\\Value\\SiteContext"
+                },
+                "identifier": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Value\\StepUpProof": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/Value/StepUpProof.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "actorId",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "sessionId",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "site",
+                            "type": "Kumwe\\Context\\Value\\SiteContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "organization",
+                            "type": "?Kumwe\\Context\\Value\\OrganizationContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "method",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "verifiedAt",
+                            "type": "DateTimeImmutable",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "expiresAt",
+                            "type": "DateTimeImmutable",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "nonce",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "workspace",
+                            "type": "?Kumwe\\Context\\Value\\WorkspaceContext",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "purpose",
+                            "type": "string",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "securityEpoch",
+                            "type": "int",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "actorId": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "expiresAt": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "DateTimeImmutable"
+                },
+                "isValidFor": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "actorId",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "sessionId",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "site",
+                            "type": "Kumwe\\Context\\Value\\SiteContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "organization",
+                            "type": "?Kumwe\\Context\\Value\\OrganizationContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "now",
+                            "type": "DateTimeImmutable",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "bool"
+                },
+                "method": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "nonce": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "organization": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?Kumwe\\Context\\Value\\OrganizationContext"
+                },
+                "purpose": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "securityEpoch": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "int"
+                },
+                "sessionId": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "site": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "Kumwe\\Context\\Value\\SiteContext"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "verifiedAt": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "DateTimeImmutable"
+                },
+                "workspace": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "?Kumwe\\Context\\Value\\WorkspaceContext"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Context\\Value\\WorkspaceContext": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/Value/WorkspaceContext.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "equals": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "other",
+                            "type": "Kumwe\\Context\\Value\\WorkspaceContext",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "bool"
+                },
+                "fromString": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "identifier",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Context\\Value\\WorkspaceContext"
+                },
+                "identifier": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                }
+            },
+            "deprecated": null
+        }
+    },
+    "extension_points": [
+        "Kumwe\\Context\\Contract\\Principal",
+        "Kumwe\\Context\\Contract\\SystemActor"
+    ],
+    "digest_of": "src"
+}

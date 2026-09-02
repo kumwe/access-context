@@ -1,0 +1,36 @@
+# Changelog
+
+Delivered package changes, newest first. A change is recorded here only after its stated proof passes on a
+clean clone. The newest `## X.Y.Z` heading is the release record: merging it to `main` is the release, and the
+`Release on record` workflow tags and publishes exactly that version.
+
+## 0.1.0
+
+- **Extraction of the canonical access context from kumwe/app (`KUMWE-MIG-2026-004`).** The site,
+  organization, workspace and membership values, the authenticated-surface and authentication-strength
+  vocabularies, the step-up proof and the execution context moved from `Kumwe\App\Application\Authorization\*`
+  to `Kumwe\Context\Value\*` with their grammars, invariants, refusal messages and fingerprints preserved byte
+  for byte. App keeps authentication, sessions, tokens, grants, membership lookup, site selection, the closed
+  set of system identities and every authorization decision.
+- **The Authorization-Identity cycle is broken by two contracts.** `Kumwe\Context\Contract\Principal` exposes
+  the subject, security epoch, provenance check and the two authority fingerprints an execution context and a
+  policy read; `Kumwe\Context\Contract\SystemActor` makes an unattended actor explicit through one stable
+  identifier. The execution context carries a `Principal` and a `SystemActor` instead of the App's
+  authenticated-principal class and system-identity enum, validates the claims it is handed, and implements
+  no host interface.
+- **Every refusal is a `Kumwe\Context\Exception\InvalidContext`**, an `InvalidArgumentException` subclass, so
+  callers that already catch the base type keep working and callers that want the package's own type have one.
+- **Additive facts for consumers.** `AuthenticationStrength::isHuman()` and `satisfies()` (the credential-presence
+  ordering `BearerToken` < `Password` < `MultiFactor`, with `System` incomparable), `equals()` on every scope
+  value and on the membership snapshot, `ExecutionContext::isSystem()`, `systemActor()`, and redacted
+  `toArray()` exports on the membership snapshot, the step-up proof and the execution context. Exports carry
+  no provenance, session identifier, nonce or fingerprint.
+- **Deliberate omissions recorded as decisions.** The PSR-7 request-attribute constant stays with the App's
+  delivery layer; the extension-SDK execution-context interface is implemented by an App adapter; the
+  membership freshness port, the system principal and the closed system-identity set remain App authority.
+- **Package lane and release automation.** `composer check` runs Composer validation, syntax, line width,
+  member documentation, the architecture boundary, the reflected public API manifest, manifest agreement,
+  the production autoload smoke, PSR-12, PHPStan level max with strict and deprecation rules, and the
+  dependency-free behavioural suite. CI repeats the lane on PHP 8.5, proves the no-dev classmap-authoritative
+  autoloader, builds the consumer archive, verifies its exact file set and installs it as a clean consumer.
+  `Release on record` tags and publishes the version this heading records after a human merge to `main`.
