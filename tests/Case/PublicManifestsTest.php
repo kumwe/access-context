@@ -80,7 +80,8 @@ final class PublicManifestsTest extends TestCase
             };
             $this->assertTrue($loaded, "{$fqcn} must load as its recorded kind.");
             $this->assertSame('stable', $entry['stability'] ?? null, "{$fqcn} is stable.");
-            $this->assertNull($entry['deprecated'] ?? 'missing', "{$fqcn} is not deprecated.");
+            $this->assertTrue(array_key_exists('deprecated', $entry), "{$fqcn} declares deprecation state.");
+            $this->assertNull($entry['deprecated'], "{$fqcn} is not deprecated.");
             $this->assertTrue(is_file($root . '/' . ($entry['file'] ?? '')), "{$fqcn} names its file.");
         }
         $this->assertSame(
@@ -106,7 +107,8 @@ final class PublicManifestsTest extends TestCase
         $capabilities = $this->json('resources/capabilities/v1.json');
         $this->assertSame('kumwe-package-capabilities/v1', $capabilities['schema'] ?? null, 'Schema.');
         $this->assertSame($api['release'] ?? null, $capabilities['release'] ?? null, 'Same release.');
-        $this->assertNull($capabilities['native_requirements'] ?? 'missing', 'No native requirement.');
+        $this->assertTrue(array_key_exists('native_requirements', $capabilities), 'Native requirement is explicit.');
+        $this->assertNull($capabilities['native_requirements'], 'No native requirement.');
 
         $claimed = [];
         foreach (is_array($capabilities['capabilities'] ?? null) ? $capabilities['capabilities'] : [] as $entry) {
@@ -135,7 +137,8 @@ final class PublicManifestsTest extends TestCase
     {
         $map = $this->json('resources/service-map/v1.json');
         $this->assertSame('kumwe-package-service-map/v1', $map['schema'] ?? null, 'Schema.');
-        $this->assertNull($map['config_provider'] ?? 'missing', 'No provider.');
+        $this->assertTrue(array_key_exists('config_provider', $map), 'Provider absence is explicit.');
+        $this->assertNull($map['config_provider'], 'No provider.');
         $reason = $map['provider_absence_reason'] ?? null;
         $this->assertTrue(is_string($reason) && $reason !== '', 'A reason is given.');
         $this->assertSame([], $map['factories'] ?? null, 'No factory.');

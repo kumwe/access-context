@@ -195,7 +195,7 @@ foreach (array_keys($symbols) as $fqcn) {
         $failures[] = "No capability claims the exported symbol {$fqcn}.";
     }
 }
-if (($capabilities['native_requirements'] ?? 'missing') !== null) {
+if (!array_key_exists('native_requirements', $capabilities) || $capabilities['native_requirements'] !== null) {
     $failures[] = 'resources/capabilities/v1.json must declare native_requirements: null.';
 }
 if (($capabilities['deprecations'] ?? null) !== []) {
@@ -203,7 +203,7 @@ if (($capabilities['deprecations'] ?? null) !== []) {
 }
 
 if ($serviceMap !== []) {
-    if (($serviceMap['config_provider'] ?? 'missing') !== null) {
+    if (!array_key_exists('config_provider', $serviceMap) || $serviceMap['config_provider'] !== null) {
         $failures[] = 'resources/service-map/v1.json must declare config_provider: null.';
     }
     $reason = $serviceMap['provider_absence_reason'] ?? null;
