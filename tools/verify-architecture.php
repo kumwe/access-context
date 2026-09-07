@@ -14,6 +14,53 @@
 
 declare(strict_types=1);
 
+/**
+ * Inspect names and ambient operations using PHP's case-insensitive token spelling.
+ * @param string $source Source text, never executed.
+ * @return list<string> Boundary findings.
+ */
+$contextTokens = static function (string $source): array {
+    $findings = [];
+    $previous = null;
+    foreach (token_get_all($source) as $token) {
+        if (is_array($token) && in_array($token[0], [T_COMMENT, T_DOC_COMMENT, T_WHITESPACE], true)) {
+            continue;
+        }
+        $context = $previous;
+        $previous = is_array($token) ? $token[0] : $token;
+        if (!is_array($token)) {
+            continue;
+        }
+        if (!in_array($token[0], [T_STRING, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED], true)) {
+            continue;
+        }
+        $name = strtolower(ltrim($token[1], '\\'));
+        if (
+            str_contains($name, '\\') && $name !== 'kumwe\\context'
+            && !str_starts_with($name, 'kumwe\\context\\')
+        ) {
+            $findings[] = 'Foreign qualified name: ' . $name;
+        }
+        if (in_array($name, ['psr', 'laminas', 'twig', 'monolog', 'ramsey', 'doctrine'], true)) {
+            $findings[] = 'Foreign namespace alias: ' . $name;
+        }
+        if (
+            in_array(
+                $name,
+                ['time', 'date', 'microtime', 'hrtime', 'random_bytes', 'random_int', 'mt_rand', 'rand'],
+                true,
+            )
+            && !in_array($context, [T_DOUBLE_COLON, T_OBJECT_OPERATOR, T_NULLSAFE_OBJECT_OPERATOR], true)
+        ) {
+            $findings[] = 'Ambient clock or randomness: ' . $name;
+        }
+        if ($context === T_NEW && in_array($name, ['datetime', 'datetimeimmutable'], true)) {
+            $findings[] = 'Ambient time construction: ' . $name;
+        }
+    }
+    return $findings;
+};
+
 $root = dirname(__DIR__);
 $source = $root . '/src';
 $prefix = 'Kumwe\\Context\\';
@@ -59,6 +106,10 @@ foreach ($files as $path) {
         continue;
     }
 
+    foreach ($contextTokens($code) as $finding) {
+        $failures[] = $relative . ': ' . $finding;
+    }
+
     if (!str_starts_with($code, "<?php\n\ndeclare(strict_types=1);\n\nnamespace ")) {
         $failures[] = "{$relative} must open with the PHP tag, strict types and its namespace.";
     }
@@ -95,12 +146,12 @@ foreach ($files as $path) {
         }
     }
     foreach ($forbiddenNamespaces as $forbiddenNamespace) {
-        if (str_contains($code, $forbiddenNamespace)) {
+        if (stripos($code, $forbiddenNamespace) !== false) {
             $failures[] = "{$relative} references the forbidden namespace {$forbiddenNamespace}.";
         }
     }
     foreach ($forbiddenCalls as $call) {
-        if (preg_match('/(?<![\w>$\\\\])' . preg_quote($call, '/') . '/', $code) === 1) {
+        if (preg_match('/(?<![\w>$\\\\])' . preg_quote($call, '/') . '/i', $code) === 1) {
             $failures[] = "{$relative} reaches for ambient state or a hidden side effect: {$call}.";
         }
     }
@@ -131,3 +182,18 @@ if ($failures !== []) {
 }
 
 echo 'Architecture check passed: ' . count($files) . " source files inside the Kumwe\\Context boundary.\n";
+
+if (in_array('--self-test', $argv ?? [], true)) {
+    $cases = ['\\TiMe()', '\\random_bytes(1)', 'new \\dAtEtImEiMmUtAbLe()',
+        'use function RaNd as entropy;', 'new \\pSr\\Container\\ContainerInterface()',
+        'use PsR as Container;', 'new \\LaMiNaS\\ServiceManager()'];
+    foreach ($cases as $case) {
+        if ($contextTokens('<?php ' . $case . ';') === []) {
+            throw new RuntimeException('Context boundary mutation accepted: ' . $case);
+        }
+    }
+    if ($contextTokens('<?php function supplied(\\DateTimeImmutable $at): void {}') !== []) {
+        throw new RuntimeException('Explicitly supplied time values must remain allowed.');
+    }
+    echo count($cases) . " context token mutations and one supplied-time control passed.\n";
+}
