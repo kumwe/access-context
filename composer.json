@@ -32,7 +32,7 @@
     "lint": "php tools/lint.php",
     "lines": "php tools/check-lines.php",
     "docs": "php tools/check-docblocks.php",
-    "architecture": "php tools/verify-architecture.php",
+    "architecture": "php tools/verify-architecture.php --self-test",
     "api": "php tools/verify-public-api.php",
     "api:record": "php tools/verify-public-api.php --write",
     "manifests": "php tools/verify-manifests.php",
@@ -47,6 +47,7 @@
       "@lines",
       "@docs",
       "@architecture",
+      "@boundary:tokens",
       "@api",
       "@manifests",
       "@autoload:smoke",
@@ -68,7 +69,8 @@
       "@php examples/step-up-context.php"
     ],
     "release:integrity": "bash tools/test-release-integrity.sh",
-    "test:ownership": "php tools/verify-test-ownership.php --self-test"
+    "test:ownership": "php tools/verify-test-ownership.php --self-test",
+    "boundary:tokens": "php tools/verify-boundary-tokens.php --self-test"
   },
   "config": {
     "sort-packages": true

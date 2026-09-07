@@ -7,138 +7,141 @@
       "php",
       "tests/run.php",
       "--list-json"
-    ]
+    ],
+    "namespace_prefix": "Kumwe\\Context\\Tests\\"
   },
   "exports": {
     "Kumwe\\Context\\Contract\\Principal": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\ExecutionContextTest::testHumanContextCarriesExplicitFacts"
+        "Case\\ExecutionContextTest::testHumanContextCarriesExplicitFacts"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\ExecutionContextTest::testForeignOrHostilePrincipalsAreRefused"
+        "Case\\ExecutionContextTest::testForeignOrHostilePrincipalsAreRefused"
       ],
-      "note": "The package owns the port contract; listed cases exercise its signature or consumer path. Concrete host adapter behavior remains with its implementing repository."
+      "note": "Owns port signature/consumer contract; concrete adapters own their implementation behavior."
     },
     "Kumwe\\Context\\Contract\\SystemActor": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\ExecutionContextTest::testSystemContextIsExplicitAndConfined"
+        "Case\\ExecutionContextTest::testSystemContextIsExplicitAndConfined"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\ExecutionContextTest::testHostileSystemActorIsRefused"
+        "Case\\ExecutionContextTest::testHostileSystemActorIsRefused"
       ],
-      "note": "The package owns the port contract; listed cases exercise its signature or consumer path. Concrete host adapter behavior remains with its implementing repository."
+      "note": "Owns port signature/consumer contract; concrete adapters own their implementation behavior."
     },
     "Kumwe\\Context\\Exception\\InvalidContext": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\InvalidContextTest::testIsAFinalInvalidArgumentException"
+        "Case\\InvalidContextTest::testIsAFinalInvalidArgumentException"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\InvalidContextTest::testIsAFinalInvalidArgumentException"
+        "Case\\InvalidContextTest::testIsAFinalInvalidArgumentException"
       ]
     },
     "Kumwe\\Context\\Value\\AuthenticatedSurface": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\AuthenticatedSurfaceTest::testCasesAndBackingValuesAreStable"
+        "Case\\AuthenticatedSurfaceTest::testCasesAndBackingValuesAreStable"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\AuthenticatedSurfaceTest::testCasesAndBackingValuesAreStable"
+        "Case\\AuthenticatedSurfaceTest::testCasesAndBackingValuesAreStable"
       ]
     },
     "Kumwe\\Context\\Value\\AuthenticationStrength": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\AuthenticationStrengthTest::testCasesAndBackingValuesAreStable",
-        "Kumwe\\Context\\Tests\\Case\\AuthenticationStrengthTest::testHumanStrengthsAreEverythingButSystem"
+        "Case\\AuthenticationStrengthTest::testCasesAndBackingValuesAreStable",
+        "Case\\AuthenticationStrengthTest::testHumanStrengthsAreEverythingButSystem"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\AuthenticationStrengthTest::testCasesAndBackingValuesAreStable",
-        "Kumwe\\Context\\Tests\\Case\\AuthenticationStrengthTest::testOrderingMatrix"
+        "Case\\AuthenticationStrengthTest::testCasesAndBackingValuesAreStable",
+        "Case\\AuthenticationStrengthTest::testOrderingMatrix"
       ]
     },
     "Kumwe\\Context\\Value\\ExecutionContext": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\ExecutionContextTest::testHumanContextCarriesExplicitFacts",
-        "Kumwe\\Context\\Tests\\Case\\ExecutionContextTest::testDefaultsDeriveOnlyFromSuppliedFacts"
+        "Case\\ExecutionContextTest::testHumanContextCarriesExplicitFacts",
+        "Case\\ExecutionContextTest::testDefaultsDeriveOnlyFromSuppliedFacts"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\ExecutionContextTest::testImpossibleCombinationsAreRefused",
-        "Kumwe\\Context\\Tests\\Case\\ExecutionContextTest::testForeignOrHostilePrincipalsAreRefused"
+        "Case\\ExecutionContextTest::testImpossibleCombinationsAreRefused",
+        "Case\\ExecutionContextTest::testForeignOrHostilePrincipalsAreRefused"
       ]
     },
     "Kumwe\\Context\\Value\\MembershipContext": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\MembershipContextTest::testExposesEveryFact",
-        "Kumwe\\Context\\Tests\\Case\\MembershipContextTest::testFingerprintCoversEveryFactAndAbsenceIsExplicit"
+        "Case\\MembershipContextTest::testExposesEveryFact",
+        "Case\\MembershipContextTest::testFingerprintCoversEveryFactAndAbsenceIsExplicit"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\MembershipContextTest::testRefusesMalformedRowIdentity",
-        "Kumwe\\Context\\Tests\\Case\\MembershipContextTest::testRefusesNonPositiveGenerations"
+        "Case\\MembershipContextTest::testRefusesMalformedRowIdentity",
+        "Case\\MembershipContextTest::testRefusesNonPositiveGenerations"
       ]
     },
     "Kumwe\\Context\\Value\\OrganizationContext": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\OrganizationContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
-        "Kumwe\\Context\\Tests\\Case\\OrganizationContextTest::testEqualityAndDistinctionFromSite"
+        "Case\\OrganizationContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
+        "Case\\OrganizationContextTest::testEqualityAndDistinctionFromSite"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\OrganizationContextTest::testRejectsControlBytesBeforeNormalization",
-        "Kumwe\\Context\\Tests\\Case\\OrganizationContextTest::testNormalisesAndAdmitsTheDocumentedGrammar"
+        "Case\\OrganizationContextTest::testRejectsControlBytesBeforeNormalization",
+        "Case\\OrganizationContextTest::testNormalisesAndAdmitsTheDocumentedGrammar"
       ]
     },
     "Kumwe\\Context\\Value\\SiteContext": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\SiteContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
-        "Kumwe\\Context\\Tests\\Case\\SiteContextTest::testDefaultSiteIsTheDefaultConstant"
+        "Case\\SiteContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
+        "Case\\SiteContextTest::testDefaultSiteIsTheDefaultConstant"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\SiteContextTest::testRejectsControlBytesBeforeNormalization",
-        "Kumwe\\Context\\Tests\\Case\\SiteContextTest::testNormalisesAndAdmitsTheDocumentedGrammar"
+        "Case\\SiteContextTest::testRejectsControlBytesBeforeNormalization",
+        "Case\\SiteContextTest::testNormalisesAndAdmitsTheDocumentedGrammar"
       ]
     },
     "Kumwe\\Context\\Value\\StepUpProof": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\StepUpProofTest::testWorkspaceRequiresOrganization",
-        "Kumwe\\Context\\Tests\\Case\\StepUpProofTest::testExposesEveryBindingAndDocumentedDefaults"
+        "Case\\StepUpProofTest::testWorkspaceRequiresOrganization",
+        "Case\\StepUpProofTest::testExposesEveryBindingAndDocumentedDefaults"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\StepUpProofTest::testRefusesInvalidIdentities",
-        "Kumwe\\Context\\Tests\\Case\\StepUpProofTest::testRefusesMethodOutsideGrammar"
+        "Case\\StepUpProofTest::testRefusesInvalidIdentities",
+        "Case\\StepUpProofTest::testRefusesMethodOutsideGrammar"
       ]
     },
     "Kumwe\\Context\\Value\\WorkspaceContext": {
       "behavior": [
-        "Kumwe\\Context\\Tests\\Case\\WorkspaceContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
-        "Kumwe\\Context\\Tests\\Case\\WorkspaceContextTest::testEqualityAndDistinctionFromOrganization"
+        "Case\\WorkspaceContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
+        "Case\\WorkspaceContextTest::testEqualityAndDistinctionFromOrganization"
       ],
       "boundary": [
-        "Kumwe\\Context\\Tests\\Case\\WorkspaceContextTest::testRejectsControlBytesBeforeNormalization",
-        "Kumwe\\Context\\Tests\\Case\\WorkspaceContextTest::testNormalisesAndAdmitsTheDocumentedGrammar"
+        "Case\\WorkspaceContextTest::testRejectsControlBytesBeforeNormalization",
+        "Case\\WorkspaceContextTest::testNormalisesAndAdmitsTheDocumentedGrammar"
       ]
     }
   },
   "conformance": {
     "status": "owned",
-    "rationale": "Explicit context/proof conformance matrices are embedded in package test methods and cover time, binding, identity, redaction and ordering.",
+    "rationale": "Embedded context/proof matrices cover time, binding, identity, redaction and ordering.",
     "tests": [
-      "Kumwe\\Context\\Tests\\Case\\AuthenticationStrengthTest::testOrderingMatrix",
-      "Kumwe\\Context\\Tests\\Case\\ExecutionContextTest::testIdentifierGrammar",
-      "Kumwe\\Context\\Tests\\Case\\OrganizationContextTest::testRejectsControlBytesBeforeNormalization",
-      "Kumwe\\Context\\Tests\\Case\\OrganizationContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
-      "Kumwe\\Context\\Tests\\Case\\SiteContextTest::testRejectsControlBytesBeforeNormalization",
-      "Kumwe\\Context\\Tests\\Case\\SiteContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
-      "Kumwe\\Context\\Tests\\Case\\SiteContextTest::testEqualityIsByNormalisedIdentifier",
-      "Kumwe\\Context\\Tests\\Case\\StepUpProofTest::testRefusesMethodOutsideGrammar"
+      "Case\\AuthenticationStrengthTest::testOrderingMatrix",
+      "Case\\ExecutionContextTest::testIdentifierGrammar",
+      "Case\\OrganizationContextTest::testRejectsControlBytesBeforeNormalization",
+      "Case\\OrganizationContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
+      "Case\\SiteContextTest::testRejectsControlBytesBeforeNormalization",
+      "Case\\SiteContextTest::testNormalisesAndAdmitsTheDocumentedGrammar",
+      "Case\\SiteContextTest::testEqualityIsByNormalisedIdentifier",
+      "Case\\StepUpProofTest::testRefusesMethodOutsideGrammar"
     ],
     "corpora": []
   },
   "architecture": [
-    "tools/verify-architecture.php"
+    "tools/verify-architecture.php",
+    "tools/verify-boundary-tokens.php"
   ],
   "host": {
     "repository": "kumwe/app",
     "baseline": "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e",
     "transfers": [],
     "retained_responsibilities": [
-      "Authentication/session/token resolution, trusted system actors, membership lookup, disabled users and request/site composition."
+      "Authentication, sessions, tokens and trusted system actors.",
+      "Membership lookup, disabled users and request/site composition."
     ]
   }
 }
