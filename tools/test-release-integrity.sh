@@ -38,4 +38,7 @@ done
 for malformed in '' '{}' '[]' 'null' 'true' 'not-json'; do
   refuse published 0.1.1 <<< "$malformed"
 done
+refuse published 0.1.1 <<< "$payload $payload"
+refuse published 0.1.1 <<< "{} $payload"
+refuse published 0.1.1 <<< "$payload {}"
 echo "Release integrity gate passed: $checks isolated fixtures."
