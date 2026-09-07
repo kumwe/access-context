@@ -139,7 +139,7 @@ final class StepUpProofTest extends TestCase
      */
     public function testRefusesInvalidIdentities(): void
     {
-        foreach (['', str_repeat('a', 192), "a\x00b", "a\x7f", "line\nbreak"] as $value) {
+        foreach (['', str_repeat('a', 192), "a\x00b", "a\x7f", "line\nbreak", "\xff", "bad\xc3"] as $value) {
             $this->assertRefused(
                 fn (): StepUpProof => $this->proof(['actorId' => $value]),
                 'The step-up actor identity is invalid.',

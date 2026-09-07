@@ -69,7 +69,10 @@ final readonly class StepUpProof
             throw new InvalidContext('A step-up workspace requires an organization.');
         }
         foreach (['actor' => $actorId, 'session' => $sessionId] as $name => $value) {
-            if ($value === '' || strlen($value) > 191 || preg_match('/[\x00-\x1F\x7F]/', $value) === 1) {
+            if (
+                $value === '' || strlen($value) > 191 || preg_match('//u', $value) !== 1
+                || preg_match('/[\x00-\x1F\x7F]/', $value) === 1
+            ) {
                 throw new InvalidContext(sprintf('The step-up %s identity is invalid.', $name));
             }
         }

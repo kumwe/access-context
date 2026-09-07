@@ -1,7 +1,7 @@
 {
     "schema": "kumwe-package-public-api/v1",
     "package": "kumwe/access-context",
-    "release": "0.1.1",
+    "release": "0.1.2",
     "namespace": "Kumwe\\Context\\",
     "symbols": {
         "Kumwe\\Context\\Contract\\Principal": {

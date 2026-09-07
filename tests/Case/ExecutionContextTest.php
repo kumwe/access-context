@@ -270,7 +270,7 @@ final class ExecutionContextTest extends TestCase
             'A human context requires a principal from the same authority.',
             'A principal vouched for elsewhere.',
         );
-        foreach (['', str_repeat('s', 192), "sub\x00ject", "sub\x1fject"] as $subject) {
+        foreach (['', str_repeat('s', 192), "sub\x00ject", "sub\x1fject", "\xff"] as $subject) {
             $this->assertRefused(
                 fn (): ExecutionContext => $this->human([
                     'principal' => new FakePrincipal($this->provenance, $subject),
@@ -297,7 +297,7 @@ final class ExecutionContextTest extends TestCase
      */
     public function testIdentifierGrammar(): void
     {
-        $hostile = ['', str_repeat('r', 192), "req\x00", "req\n", "\x7f"];
+        $hostile = ['', str_repeat('r', 192), "req\x00", "req\n", "\x7f", "\xff", "bad\xc3"];
         foreach ($hostile as $value) {
             $this->assertRefused(
                 fn (): ExecutionContext => $this->human(['requestId' => $value]),
@@ -368,7 +368,7 @@ final class ExecutionContextTest extends TestCase
      */
     public function testHostileSystemActorIsRefused(): void
     {
-        foreach (['', str_repeat('s', 192), "system:\x00worker", "system:\nworker"] as $identifier) {
+        foreach (['', str_repeat('s', 192), "system:\x00worker", "system:\nworker", "\xff"] as $identifier) {
             $this->assertRefused(
                 fn (): ExecutionContext => ExecutionContext::issueSystem(
                     $this->provenance,
