@@ -30,7 +30,7 @@ target:
   repository: https://github.com/kumwe/access-context
   artifact_identity: kumwe/access-context
   canonical_namespace_or_abi: Kumwe\Context
-  branch: "fix/release-integrity-successor-20260907"
+  branch: codex/extraction-readiness-20260907
   pull_request: "https://github.com/kumwe/access-context/pull/3"
 ownership:
   responsibility: "Immutable explicitly supplied actor, scope, authentication and execution facts."
@@ -1080,7 +1080,7 @@ documentation:
     - examples/human-context.php
     - examples/system-context.php
     - examples/step-up-context.php
-  changelog_record: "CHANGELOG.md ## 0.1.1"
+  changelog_record: "CHANGELOG.md ## 0.1.2"
 release_expectations:
   version_policy: "SemVer; 0.1.1 successor under D-GOV-6; fresh verification required after publication."
   expected_artifact_types:

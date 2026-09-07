@@ -611,7 +611,10 @@ final readonly class ExecutionContext
      */
     private static function assertIdentity(string $value, string $name): void
     {
-        if ($value === '' || strlen($value) > 191 || preg_match('/[\x00-\x1F\x7F]/', $value) === 1) {
+        if (
+            $value === '' || strlen($value) > 191 || preg_match('//u', $value) !== 1
+            || preg_match('/[\x00-\x1F\x7F]/', $value) === 1
+        ) {
             throw new InvalidContext(sprintf('The %s identity is invalid.', $name));
         }
     }
