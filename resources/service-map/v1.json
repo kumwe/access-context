@@ -1,11 +1,11 @@
 {
-    "schema": "kumwe-package-service-map/v1",
-    "package": "kumwe/access-context",
-    "release": "0.1.2",
-    "config_provider": null,
-    "provider_absence_reason": "Values, enums, contracts and an exception only; a context is supplied, never a service.",
-    "factories": [],
-    "aliases": [],
-    "delegators": [],
-    "configuration_keys": []
+  "schema": "kumwe-package-service-map/v1",
+  "package": "kumwe/access-context",
+  "release": "0.1.2",
+  "config_provider": null,
+  "provider_absence_reason": "Values, enums, contracts and an exception only; a context is supplied, never a service.",
+  "factories": [],
+  "aliases": [],
+  "delegators": [],
+  "configuration_keys": []
 }

@@ -1,5 +1,8 @@
 # Public API
 
+Execution and step-up actor/request/correlation/session identities must be valid UTF-8 as well as nonempty,
+control-free and at most 191 bytes. Invalid input throws InvalidContext before serialization.
+
 Every declared public member is documented below from its source contract. Signatures are also verified against
 `resources/public-api/v1.json`. The package performs no I/O, transaction or authorization. Values are immutable;
 host Principal/SystemActor implementations must remain stable for the unit of work. Null denotes explicit absence.
@@ -1327,4 +1330,5 @@ Expose the normalised workspace identifier.
 @since   0.1.0
 
 Raw control bytes in site, organization and workspace inputs are rejected before whitespace normalization.
-This includes leading/trailing NUL, tabs, newlines, carriage returns and DEL; valid space-padded values still normalize.
+This includes leading/trailing NUL, tabs, newlines, carriage returns and DEL; valid space-padded values still
+normalize.
