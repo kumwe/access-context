@@ -1445,3 +1445,10 @@ unprotected release ref before tag/release mutation and verifies exact published
 The setting applies only to future releases. Keep 0.1.0 and its tag intact; never move, delete or replace them.
 A fresh independent verifier must attest the successor before dependent publication or App adoption.
 See docs/releasing.md for the setup and verification order.
+
+## Enforced package test ownership
+
+Portable behavior, boundary and conformance evidence is maintained in `tests/ownership.json`,
+validated against the public API and actual test-runner discovery by `composer test:ownership`.
+See `docs/test-ownership.md` for the future-change rule and the precise host boundary.
+This follow-up changes package tests/tooling only; it does not authorize early App test deletion.

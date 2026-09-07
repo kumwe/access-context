@@ -52,6 +52,7 @@
       "@autoload:smoke",
       "@cs",
       "@analyse",
+      "@test:ownership",
       "@test",
       "@release-record",
       "@security",
@@ -66,7 +67,8 @@
       "@php examples/system-context.php",
       "@php examples/step-up-context.php"
     ],
-    "release:integrity": "bash tools/test-release-integrity.sh"
+    "release:integrity": "bash tools/test-release-integrity.sh",
+    "test:ownership": "php tools/verify-test-ownership.php --self-test"
   },
   "config": {
     "sort-packages": true
