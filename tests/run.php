@@ -39,6 +39,8 @@ if ($files === []) {
     exit(1);
 }
 
+$listOnly = in_array('--list-json', $argv ?? [], true);
+$inventory = [];
 $totalTests = 0;
 $totalAssertions = 0;
 $failures = [];
@@ -61,6 +63,10 @@ foreach ($files as $file) {
         }
         $totalTests++;
         $ran++;
+        $inventory[$class . '::' . $method] = 'tests/Case/' . basename($file);
+        if ($listOnly) {
+            continue;
+        }
         try {
             (new ReflectionMethod($case, $method))->invoke($case);
         } catch (Throwable $error) {
@@ -78,7 +84,9 @@ foreach ($files as $file) {
         $failures[] = "{$class} declares no public test methods.";
     }
     $totalAssertions += $case->assertionCount();
-    echo sprintf("%-40s %3d tests\n", basename($file), $ran);
+    if (!$listOnly) {
+        echo sprintf("%-40s %3d tests\n", basename($file), $ran);
+    }
 }
 
 if ($totalTests === 0) {
@@ -88,6 +96,11 @@ if ($totalTests === 0) {
 if ($failures !== []) {
     fwrite(STDERR, "\nFailures:\n - " . implode("\n - ", $failures) . "\n");
     exit(1);
+}
+
+if ($listOnly) {
+    echo json_encode($inventory, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT) . "\n";
+    exit(0);
 }
 
 echo "\nAccess Context suite passed: {$totalTests} tests, {$totalAssertions} assertions.\n";
