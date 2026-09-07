@@ -16,7 +16,7 @@
     {
       "id": "access-context.scope",
       "title": "Site, organization and workspace scope values",
-      "description": "Normalised, bounded scope identifiers as three distinct types that never convert or compare.",
+      "description": "Bounded distinct site, organization and workspace identifiers.",
       "symbols": [
         "Kumwe\\Context\\Value\\SiteContext",
         "Kumwe\\Context\\Value\\OrganizationContext",
@@ -30,7 +30,7 @@
     {
       "id": "access-context.membership",
       "title": "Versioned membership snapshot",
-      "description": "Server-resolved organization and workspace membership with versions, fingerprinted to fail stale.",
+      "description": "Versioned organization and workspace membership snapshots.",
       "symbols": [
         "Kumwe\\Context\\Value\\MembershipContext"
       ],
@@ -41,7 +41,7 @@
     {
       "id": "access-context.actor-contracts",
       "title": "Principal and system-actor contracts",
-      "description": "Host-implemented contracts through which a context sees a human principal or an explicit system actor.",
+      "description": "Host actor contracts for human principals and explicit system identities.",
       "symbols": [
         "Kumwe\\Context\\Contract\\Principal",
         "Kumwe\\Context\\Contract\\SystemActor"
@@ -54,7 +54,7 @@
     {
       "id": "access-context.authentication-facts",
       "title": "Authentication strength, surface and step-up proof",
-      "description": "Closed strength and surface vocabularies with an ordering, and the bound fifteen-minute step-up proof.",
+      "description": "Authentication strength, surface and bounded step-up proof facts.",
       "symbols": [
         "Kumwe\\Context\\Value\\AuthenticationStrength",
         "Kumwe\\Context\\Value\\AuthenticatedSurface",
@@ -67,7 +67,7 @@
     {
       "id": "access-context.execution-context",
       "title": "Execution context",
-      "description": "The immutable per-unit-of-work envelope a host mints once and supplies explicitly to every use case.",
+      "description": "Immutable operation contexts with explicit provenance, actor and scope.",
       "symbols": [
         "Kumwe\\Context\\Value\\ExecutionContext"
       ],
@@ -80,7 +80,7 @@
     {
       "id": "access-context.refusal",
       "title": "Typed refusal",
-      "description": "The one InvalidArgumentException subclass every refusal raises; it names the rule, never the input.",
+      "description": "Typed argument refusal with rule-only messages.",
       "symbols": [
         "Kumwe\\Context\\Exception\\InvalidContext"
       ],

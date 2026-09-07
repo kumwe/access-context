@@ -205,7 +205,8 @@ final class StepUpProofTest extends TestCase
      */
     public function testRefusesNonceAndPurposeOutsideGrammar(): void
     {
-        foreach (['', str_repeat('n', 31), str_repeat('n', 129), str_repeat('n', 31) . '+', str_repeat('n', 31) . ' '] as $nonce) {
+        $nonces = ['', str_repeat('n', 31), str_repeat('n', 129), str_repeat('n', 31) . '+', str_repeat('n', 31) . ' '];
+        foreach ($nonces as $nonce) {
             $this->assertRefused(
                 fn (): StepUpProof => $this->proof(['nonce' => $nonce]),
                 'The step-up proof nonce is invalid.',
@@ -215,7 +216,8 @@ final class StepUpProofTest extends TestCase
         $this->proof(['nonce' => str_repeat('N', 128)]);
         $this->proof(['nonce' => 'A-b_0' . str_repeat('9', 27)]);
 
-        foreach (['', 'Records.delete', '1records', 'records delete', 'r' . str_repeat('e', 127), 'records/delete'] as $purpose) {
+        $purposes = ['', 'Records.delete', '1records', 'records delete', 'r' . str_repeat('e', 127), 'records/delete'];
+        foreach ($purposes as $purpose) {
             $this->assertRefused(
                 fn (): StepUpProof => $this->proof(['purpose' => $purpose]),
                 'The step-up proof purpose is invalid.',
@@ -284,9 +286,18 @@ final class StepUpProofTest extends TestCase
         $scoped = $this->proof(['organization' => $acme]);
         $global = $this->proof();
 
-        $this->assertTrue($scoped->isValidFor(self::ACTOR, 'session-77', SiteContext::default(), $acme, $now), 'Match.');
+        $this->assertTrue(
+            $scoped->isValidFor(self::ACTOR, 'session-77', SiteContext::default(), $acme, $now),
+            'Match.',
+        );
         $this->assertFalse(
-            $scoped->isValidFor('018f22e2-7c8b-7ab0-8f3a-88e8026bb399', 'session-77', SiteContext::default(), $acme, $now),
+            $scoped->isValidFor(
+                '018f22e2-7c8b-7ab0-8f3a-88e8026bb399',
+                'session-77',
+                SiteContext::default(),
+                $acme,
+                $now,
+            ),
             'Another actor.',
         );
         $this->assertFalse(
@@ -302,7 +313,13 @@ final class StepUpProofTest extends TestCase
             'Organization dropped.',
         );
         $this->assertFalse(
-            $scoped->isValidFor(self::ACTOR, 'session-77', SiteContext::default(), OrganizationContext::fromString('x'), $now),
+            $scoped->isValidFor(
+                self::ACTOR,
+                'session-77',
+                SiteContext::default(),
+                OrganizationContext::fromString('x'),
+                $now,
+            ),
             'Another organization.',
         );
         $this->assertFalse(

@@ -20,7 +20,7 @@ use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
 use Kumwe\Context\Value\StepUpProof;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require $argv[1] ?? dirname(__DIR__) . '/vendor/autoload.php';
 
 $provenance = new stdClass();
 $principal = new readonly class ($provenance) implements Principal {
