@@ -48,7 +48,7 @@ final readonly class StepUpProof
      *          character; when the method is not a lowercase token of 2 to 32 characters; when the freshness
      *          interval is empty, inverted or longer than fifteen minutes; when the nonce is not 32 to 128
      *          URL-safe characters; when the purpose is not a lowercase dotted identifier of at most 127
-     *          characters; or when the epoch is below one.
+     *          characters; when a workspace has no organization; or when the epoch is below one.
      *
      * @since   0.1.0
      */
@@ -65,6 +65,9 @@ final readonly class StepUpProof
         private string $purpose = 'legacy.step_up',
         private int $securityEpoch = 1,
     ) {
+        if ($workspace !== null && $organization === null) {
+            throw new InvalidContext('A step-up workspace requires an organization.');
+        }
         foreach (['actor' => $actorId, 'session' => $sessionId] as $name => $value) {
             if ($value === '' || strlen($value) > 191 || preg_match('/[\x00-\x1F\x7F]/', $value) === 1) {
                 throw new InvalidContext(sprintf('The step-up %s identity is invalid.', $name));
@@ -220,10 +223,11 @@ final readonly class StepUpProof
     }
 
     /**
-     * Test every binding and freshness boundary for a high-impact decision.
+     * Test the actor, session, site, organization and freshness bindings.
      *
      * Identity comparisons are constant-time. The proof is valid from `verifiedAt` inclusive to `expiresAt`
-     * exclusive; the caller supplies trusted time rather than the proof reading a clock.
+     * exclusive; the caller supplies trusted time rather than the proof reading a clock. The host must also
+     * check workspace, purpose, security epoch and nonce consumption before authorizing a protected action.
      *
      * @param   string                $actorId       Expected actor.
      * @param   string                $sessionId     Current rotated session.
@@ -231,7 +235,7 @@ final readonly class StepUpProof
      * @param   ?OrganizationContext  $organization  Current organization, or null outside one.
      * @param   DateTimeImmutable     $now           Current trusted time.
      *
-     * @return  bool  True only while every exact binding still matches and the proof is fresh.
+     * @return  bool  True only while the supplied bindings match and the proof is fresh; not an authorization.
      *
      * @since   0.1.0
      */

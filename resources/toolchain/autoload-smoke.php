@@ -91,7 +91,11 @@ foreach (is_array($capabilities['capabilities'] ?? null) ? $capabilities['capabi
     }
 }
 
-if (($serviceMap['config_provider'] ?? 'missing') !== null || class_exists('Kumwe\\Context\\ConfigProvider')) {
+if (
+    !array_key_exists('config_provider', $serviceMap)
+    || $serviceMap['config_provider'] !== null
+    || class_exists('Kumwe\\Context\\ConfigProvider')
+) {
     $failures[] = 'the service map promises no provider, but one exists or is declared';
 }
 

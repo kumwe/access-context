@@ -26,6 +26,22 @@ use ReflectionClass;
 final class StepUpProofTest extends TestCase
 {
     /**
+     * A narrower workspace cannot exist without its enclosing organization.
+     *
+     * @return  void
+     *
+     * @since   0.1.0
+     */
+    public function testWorkspaceRequiresOrganization(): void
+    {
+        $this->assertRefused(
+            fn (): StepUpProof => $this->proof(['workspace' => WorkspaceContext::fromString('finance')]),
+            'A step-up workspace requires an organization.',
+            'Orphan workspace proof is refused.',
+        );
+    }
+
+    /**
      * Actor subject used across the case.
      *
      * @var    string
