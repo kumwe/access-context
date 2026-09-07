@@ -31,7 +31,7 @@ target:
   artifact_identity: kumwe/access-context
   canonical_namespace_or_abi: Kumwe\Context
   branch: codex/extraction-readiness-20260907
-  pull_request: "https://github.com/kumwe/access-context/pull/3"
+  pull_request: https://github.com/kumwe/access-context/pull/8
 ownership:
   responsibility: "Immutable explicitly supplied actor, scope, authentication and execution facts."
   non_responsibilities:
@@ -42,11 +42,11 @@ ownership:
   next_consumer: kumwe/app
   public_manifests:
     - path: resources/public-api/v1.json
-      sha256: c300602e137ab9179ce94a7f8d75537423b751465dbd70b3193b423e1a6b69d1
+      sha256: 109b5449f343a28a2ab523c7460d7b7c4ee6d1c109f2cdaf96dd0d2124e681ba
     - path: resources/capabilities/v1.json
-      sha256: cc72a46ef7657a99d4310c82a48b6be86947d2ff548b5144dee04a16c552307a
+      sha256: fcd9597350e055c32b33ea442f51b952ba2621776a16069fa5ece318c909ea02
     - path: resources/service-map/v1.json
-      sha256: bc3c4b4eed6db564d7e646ec86457f124a5c34a7043baabbca4e1885e96cc5a4
+      sha256: 7c7647997a28ad0cdb947ceda65e8391f6c13426a1278b25b458577b23e83c63
   intentionally_excluded:
     - "AuthenticatedPrincipal and SystemIdentity stay App-owned; implement the new neutral ports there."
     - "MembershipContextValidator, grants, capabilities, request attribute and SDK adapter remain App-owned."
@@ -1387,68 +1387,42 @@ blockers:
   - "Human merge, immutable publication and independent verification are future prerequisites."
 ---
 
-## Migration/implementation summary
+# Migration/implementation summary
 
-This PR completes the existing eight-value extraction and its two neutral actor ports plus InvalidContext.
-App remains unchanged. Its identity admission, grants, policies, membership lookup and database services stay there.
+11 types; explicit principal/system ports, immutable scope values, proof/fingerprint/redaction semantics. Malformed
+UTF-8 identity rejection is now package-owned alongside the existing grammar, bounds and proof suites.
 
 ## Public API and responsibility
 
-See docs/public-api.md for every member and docs/architecture.md for the narrow closure and eleven exported symbols.
+The symbol map above and [public API](docs/public-api.md) define every exported contract.
+[Architecture](docs/architecture.md) and [integration](docs/integration.md) retain the host boundaries.
 
 ## Capability reuse/semantic input review
 
-The existing App identity types and SDK-facing context were inspected with the current Composer/governance inventory.
-No reusable dependency is needed for this closure. A runtime package dependency would expand the approved ceiling.
+No Kumwe runtime dependencies. Context 0.1.1 remains the latest published version; this review records 0.1.2 for
+the next human-reviewed release. [Current release/dependency observations](docs/readiness-review.md) supersede
+obsolete initial-extraction publication blockers. No independent attestation is fabricated.
 
-## Consumer inventory
+## Consumer inventory and drift check
 
-The machine-readable docs/migration-consumers.json freezes baseline references and retained App tests.
-Re-run FQCN, same-namespace and escaped-string searches against current App before deletion.
+The source/consumer mappings above remain the adoption inventory. Compare every mapped file and public signature
+against the recorded full App baseline and current App before consumer changes. Any newer portable behavior goes
+upstream first. Preserve App authority, adapters and workflows.
 
 ## Test ownership
 
-Package tests own identifier/proof/context invariants, fingerprints, errors, manifests and archive behavior.
-Existing App consumers are predominantly integration/security tests; none is blanket-authorized for deletion.
-Split only genuinely duplicate value assertions, preserve every host authority and transaction assertion.
+Package tests own portable behavior, boundary/conformance, API and construction. App retains actual authorization,
+transaction atomicity, persistence, concurrency, recovery and delivery tests. Remove only duplicate portable
+implementation tests during the separate verified adoption.
 
 ## Next-task execution notes
 
-The App principal/closed system identity implement the two neutral ports via reviewed host adapters.
-Retain PSR request attributes and SDK-facing implementation in App. No provider, class alias or fallback is required.
-Do not modify App until the exact released handoff and independent attestation pass the release boundary.
+Review [PR #8](https://github.com/kumwe/access-context/pull/8), require its complete package gate, then let the
+maintainer merge. Independently verify the published successor and exact dependency graph before App adoption.
+Existing published releases stay intact. This task does not implement the App runtime cutover.
 
-## Drift check
+## Validation recipe
 
-Compare the eight mapped source paths and inventory tests with the full App baseline SHA above.
-Route newer portable behavior to a successor package release; preserve App-specific changes in the consumer.
-
-## Validation recipe and observed local results
-
-Run composer check on PHP 8.5 with mbstring, tokenizer, XMLWriter and ZIP tooling.
-The lane verifies the built archive as an isolated dependency, then uses only its authoritative consumer autoloader.
-Observed on PHP 8.5.10 / Composer 2.10.3: 63 tests / 914 assertions and 12 release-record cases passed;
-strict analysis, style, syntax, member docs, architecture, API/manifests and three autoloaded examples passed.
-The exact 30-file ZIP installed as the sole dependency in an isolated authoritative no-dev consumer; all eleven
-public symbols and examples passed. The current App v2 PackageManifests loader also accepted this handoff.
-Local dependency auditing could not reach Packagist (network timeout); the mandatory audit remains in GitHub CI.
-No merge, release or App integration is claimed.
-
-## Release-integrity successor 0.1.1
-
-This PR follows the published 0.1.0 extraction and changes release automation and version-bound metadata only.
-The existing migration/change-set and NRM identifiers continue to name the same extraction. Runtime source,
-public method contracts, source baseline, consumer maps and the moved/retained test inventory are unchanged.
-
-Before merging, the maintainer protects main and enables GitHub immutable releases. The workflow refuses an
-unprotected release ref before tag/release mutation and verifies exact published immutable release metadata.
-The setting applies only to future releases. Keep 0.1.0 and its tag intact; never move, delete or replace them.
-A fresh independent verifier must attest the successor before dependent publication or App adoption.
-See docs/releasing.md for the setup and verification order.
-
-## Enforced package test ownership
-
-Portable behavior, boundary and conformance evidence is maintained in `tests/ownership.json`,
-validated against the public API and actual test-runner discovery by `composer test:ownership`.
-See `docs/test-ownership.md` for the future-change rule and the precise host boundary.
-This follow-up changes package tests/tooling only; it does not authorize early App test deletion.
+Run `composer check` and the repository release automation regressions. Runtime suites, strict static analysis,
+coding standards, manifest/API checks and the no-dev authoritative archive consumer remain required. Final tested
+source and archive identities belong in external CI/attestation evidence.

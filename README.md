@@ -56,14 +56,16 @@ production authentication and the set of permitted system actors belong to the c
 ## Construction and lifetime
 
 There is no ConfigProvider, factory registration, service alias or configuration key. These are values, enums,
-contracts and one exception; register host adapters in the composition root and pass contexts as operation arguments.
+contracts and one exception; register host adapters in the composition root and pass contexts as operation
+arguments.
 Never register a shared current actor, membership, request or tenant service. Implement `Contract\Principal` and
 `Contract\SystemActor` over the host's established identity model. Principal implementations must remain immutable
 for the unit of work and compare provenance by object identity.
 
 ## Public surface
 
-- `ExecutionContext`: explicit human/system issuance, scope facts, child contexts, fingerprints and redacted exports.
+- `ExecutionContext`: explicit human/system issuance, scope facts, child contexts, fingerprints and redacted
+exports.
 - `SiteContext`, `OrganizationContext`, `WorkspaceContext`, `MembershipContext`: distinct bounded scope facts.
 - `AuthenticationStrength`, `AuthenticatedSurface`, `StepUpProof`: authentication facts and freshness bindings.
 - `Principal`, `SystemActor`: host implementation ports.
@@ -77,7 +79,8 @@ The three manifests under `resources/` record every exported symbol, semantic ca
 
 Scopes normalize by trimming/lowercasing before their 191-character grammar check; site and organization remain
 different types. Contexts hold exactly one human or explicit system actor. Background contexts cannot impersonate
-human strength or another surface. A workspace proof requires an organization. Multi-factor contexts require a proof
+human strength or another surface. A workspace proof requires an organization. Multi-factor contexts require a
+proof
 bound to actor, session, site, organization, workspace and security epoch.
 
 `StepUpProof::isValidFor()` checks its supplied actor/session/site/organization and trusted time interval only.
@@ -97,14 +100,18 @@ composer install
 composer check
 ```
 
-The full gate includes PHPStan max/strict rules, coding/member documentation checks, behavior/API/architecture tests,
-security audit, release-record parser and an exact archive installed as a dependency in an isolated no-dev consumer.
+The full gate includes PHPStan max/strict rules, coding/member documentation checks, behavior/API/architecture
+tests,
+security audit, release-record parser and an exact archive installed as a dependency in an isolated no-dev
+consumer.
 The tooling additionally needs mbstring, tokenizer, XMLWriter and ZIP; these are development requirements, not
 runtime dependencies of the value package. `composer clean-consumer` runs the artifact check separately.
 
-The initial extraction is incomplete until this PR passes, is human-merged, and its release is independently verified.
+The portable extraction is implemented and 0.1.1 is published. This successor hardens serializable identities;
+its human review, publication and independent release verification remain required before App adoption.
 [Releasing and compatibility](docs/releasing.md) describes immutable release-on-record and exact pre-1.0 pins.
 [Security policy](docs/security.md) describes sensitive data and reporting. Apache-2.0; see [LICENSE](LICENSE).
 
 Raw control bytes in site, organization and workspace inputs are rejected before whitespace normalization.
-This includes leading/trailing NUL, tabs, newlines, carriage returns and DEL; valid space-padded values still normalize.
+This includes leading/trailing NUL, tabs, newlines, carriage returns and DEL; valid space-padded values still
+normalize.

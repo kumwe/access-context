@@ -2,18 +2,21 @@
 
 Delivered package changes, newest first. Records describe the candidate release and its required proof.
 Publication follows only after the complete
-quality lane passes. The newest `## X.Y.Z` heading is the release record: merging it to `main` is the release, and the
+quality lane passes. The newest `## X.Y.Z` heading is the release record: merging it to `main` is the release, and
+the
 `Release on record` workflow tags and publishes exactly that version.
 
 ## 0.1.2
 
-- Reject malformed UTF-8 actor, request, correlation and session identities before constructing serializable execution or step-up contexts. Extend hostile-identity conformance tests.
+- Reject malformed UTF-8 actor, request, correlation and session identities before constructing serializable
+execution or step-up contexts. Extend hostile-identity conformance tests.
 - Refresh extraction handoff and library-owned validation evidence; App adoption remains a separate task.
 
 ## 0.1.1
 
 - Unify PR and post-rebase release gates, dynamic release identity, tested publication retries,
-  and administrator setup across the package family. Preserve immutable release and dependency evidence requirements.
+  and administrator setup across the package family. Preserve immutable release and dependency evidence
+requirements.
 
 - NRM-2026-005: require protected main before publication and verify the exact release is published,
   stable and immutable. Preserve existing tag ancestry and changelog checks; refuse mutable release metadata.
