@@ -12,12 +12,15 @@
 
 declare(strict_types=1);
 
+namespace Kumwe\Context\Example;
+
 use Kumwe\Context\Contract\SystemActor;
 use Kumwe\Context\Exception\InvalidContext;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
+use stdClass;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require $argv[1] ?? dirname(__DIR__) . '/vendor/autoload.php';
 
 enum HostSystemActor: string implements SystemActor
 {

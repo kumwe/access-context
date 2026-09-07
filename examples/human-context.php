@@ -21,7 +21,7 @@ use Kumwe\Context\Value\OrganizationContext;
 use Kumwe\Context\Value\SiteContext;
 use Kumwe\Context\Value\WorkspaceContext;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require $argv[1] ?? dirname(__DIR__) . '/vendor/autoload.php';
 
 // The host's composition root owns one private provenance object; only contexts carrying it are trusted.
 $provenance = new stdClass();

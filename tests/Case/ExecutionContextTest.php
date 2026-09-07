@@ -258,7 +258,9 @@ final class ExecutionContextTest extends TestCase
             );
         }
         $this->assertRefused(
-            fn (): ExecutionContext => $this->human(['principal' => new FakePrincipal($this->provenance, self::SUBJECT, 0)]),
+            fn (): ExecutionContext => $this->human([
+                'principal' => new FakePrincipal($this->provenance, self::SUBJECT, 0),
+            ]),
             'A principal security epoch must be positive.',
             'A zero epoch.',
         );
@@ -531,7 +533,12 @@ final class ExecutionContextTest extends TestCase
             $withSession->authorizationFingerprint(),
             'The session identity is digested, never embedded.',
         );
-        $system = ExecutionContext::issueSystem($this->provenance, FakeSystemActor::Worker, SiteContext::default(), 'j');
+        $system = ExecutionContext::issueSystem(
+            $this->provenance,
+            FakeSystemActor::Worker,
+            SiteContext::default(),
+            'j',
+        );
         $this->assertNotSame(
             $system->authorizationFingerprint(),
             ExecutionContext::issueSystem($this->provenance, FakeSystemActor::Migration, SiteContext::default(), 'j')
@@ -642,7 +649,12 @@ final class ExecutionContextTest extends TestCase
         $this->assertStringExcludes('provenance', $encoded, 'No provenance.');
         $this->assertStringExcludes($context->authorizationFingerprint(), $encoded, 'No fingerprint.');
 
-        $system = ExecutionContext::issueSystem($this->provenance, FakeSystemActor::Worker, SiteContext::default(), 'j');
+        $system = ExecutionContext::issueSystem(
+            $this->provenance,
+            FakeSystemActor::Worker,
+            SiteContext::default(),
+            'j',
+        );
         $this->assertSame('system', $system->toArray()['actor_kind'], 'System kind.');
         $this->assertNull($system->toArray()['step_up'], 'No proof for a system context.');
     }

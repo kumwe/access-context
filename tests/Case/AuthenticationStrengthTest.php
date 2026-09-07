@@ -29,7 +29,10 @@ final class AuthenticationStrengthTest extends TestCase
      */
     public function testCasesAndBackingValuesAreStable(): void
     {
-        $values = array_map(static fn (AuthenticationStrength $case): string => $case->value, AuthenticationStrength::cases());
+        $values = array_map(
+            static fn (AuthenticationStrength $case): string => $case->value,
+            AuthenticationStrength::cases(),
+        );
         $this->assertSame(['password', 'bearer_token', 'multi_factor', 'system'], $values, 'Four stable values.');
         $this->assertSame(
             AuthenticationStrength::MultiFactor,

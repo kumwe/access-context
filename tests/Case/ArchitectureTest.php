@@ -36,7 +36,8 @@ final class ArchitectureTest extends TestCase
         );
         foreach ($iterator as $file) {
             if ($file instanceof \SplFileInfo && $file->isFile()) {
-                $sources[substr($file->getPathname(), strlen($root) + 1)] = (string) file_get_contents($file->getPathname());
+                $relative = substr($file->getPathname(), strlen($root) + 1);
+                $sources[$relative] = (string) file_get_contents($file->getPathname());
             }
         }
         ksort($sources, SORT_STRING);
@@ -82,7 +83,8 @@ final class ArchitectureTest extends TestCase
             512,
             JSON_THROW_ON_ERROR,
         );
-        $symbols = is_array($manifest) && is_array($manifest['symbols'] ?? null) ? array_keys($manifest['symbols']) : [];
+        $symbols = is_array($manifest) && is_array($manifest['symbols'] ?? null)
+            ? array_keys($manifest['symbols']) : [];
         $this->assertTrue($symbols !== [], 'Symbols are exported.');
         foreach ($symbols as $fqcn) {
             $this->assertTrue(is_string($fqcn) && str_starts_with($fqcn, 'Kumwe\\Context\\'), 'Canonical root.');
@@ -98,7 +100,8 @@ final class ArchitectureTest extends TestCase
             }
             foreach ($reflection->getInterfaceNames() as $interface) {
                 $this->assertTrue(
-                    str_starts_with($interface, 'Kumwe\\Context\\') || in_array($interface, ['UnitEnum', 'BackedEnum'], true),
+                    str_starts_with($interface, 'Kumwe\\Context\\')
+                        || in_array($interface, ['UnitEnum', 'BackedEnum'], true),
                     "{$fqcn} implements only package contracts or engine enum interfaces.",
                 );
             }

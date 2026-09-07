@@ -29,7 +29,10 @@ final class AuthenticatedSurfaceTest extends TestCase
      */
     public function testCasesAndBackingValuesAreStable(): void
     {
-        $values = array_map(static fn (AuthenticatedSurface $case): string => $case->value, AuthenticatedSurface::cases());
+        $values = array_map(
+            static fn (AuthenticatedSurface $case): string => $case->value,
+            AuthenticatedSurface::cases(),
+        );
         $this->assertSame(
             ['administrator', 'portal', 'api', 'mcp', 'cli', 'background', 'recovery'],
             $values,

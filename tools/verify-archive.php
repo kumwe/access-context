@@ -91,8 +91,10 @@ foreach (array_intersect_key($expected, $actual) as $relative => $_) {
     }
 }
 
-foreach (['.github', '.phpstan.cache', 'tests', 'tools', 'vendor', 'dist', '.editorconfig', '.gitattributes',
-    '.gitignore', 'composer.lock', 'phpcs.xml', 'phpstan.neon'] as $forbidden) {
+foreach (
+    ['.github', '.phpstan.cache', 'tests', 'tools', 'vendor', 'dist', '.editorconfig', '.gitattributes',
+    '.gitignore', 'composer.lock', 'phpcs.xml', 'phpstan.neon'] as $forbidden
+) {
     if (file_exists($archive . '/' . $forbidden)) {
         $failures[] = 'Development-lane path shipped: ' . $forbidden;
     }

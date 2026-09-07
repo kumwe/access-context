@@ -1,10 +1,17 @@
 # Changelog
 
-Delivered package changes, newest first. A change is recorded here only after its stated proof passes on a
-clean clone. The newest `## X.Y.Z` heading is the release record: merging it to `main` is the release, and the
+Delivered package changes, newest first. Records describe the candidate release and its required proof.
+Publication follows only after the complete
+quality lane passes. The newest `## X.Y.Z` heading is the release record: merging it to `main` is the release, and the
 `Release on record` workflow tags and publishes exactly that version.
 
 ## 0.1.0
+
+- **Complete the unfinished extraction (`NRM-2026-005`).** Fix explicit-null manifest checks; reject a step-up
+  workspace without its enclosing organization; clarify that proof freshness checks are not authorization.
+  Supply the missing charter, complete member/API documentation, security/release guidance and PR-linked handoff.
+  Add the full CI/release lane and exact built archive installed as a dependency in an isolated no-dev consumer.
+  Repair the pre-existing style/line-width failures rather than weakening the existing gates.
 
 - **Extraction of the canonical access context from kumwe/app (`KUMWE-MIG-2026-004`).** The site,
   organization, workspace and membership values, the authenticated-surface and authentication-strength

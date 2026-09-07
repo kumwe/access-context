@@ -14,7 +14,7 @@
 declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
-$autoload = $root . '/vendor/autoload.php';
+$autoload = $argv[1] ?? $root . '/vendor/autoload.php';
 $manifestPath = $root . '/resources/public-api/v1.json';
 $capabilitiesPath = $root . '/resources/capabilities/v1.json';
 $serviceMapPath = $root . '/resources/service-map/v1.json';
@@ -107,7 +107,11 @@ if ($examples === []) {
 }
 foreach ($examples as $example) {
     $output = [];
-    exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($example) . ' 2>&1', $output, $status);
+    exec(
+        escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($example) . ' ' . escapeshellarg($autoload) . ' 2>&1',
+        $output,
+        $status,
+    );
     if ($status !== 0 || $output === []) {
         $failures[] = sprintf('example %s exited %d: %s', basename($example), $status, implode(' ', $output));
     }

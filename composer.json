@@ -52,7 +52,18 @@
       "@autoload:smoke",
       "@cs",
       "@analyse",
-      "@test"
+      "@test",
+      "@release-record",
+      "@security",
+      "@clean-consumer"
+    ],
+    "clean-consumer": "php tools/verify-clean-consumer.php",
+    "security": "composer audit --abandoned=fail",
+    "release-record": "bash tools/test-release-record.sh",
+    "examples": [
+      "@php examples/human-context.php",
+      "@php examples/system-context.php",
+      "@php examples/step-up-context.php"
     ]
   },
   "config": {
