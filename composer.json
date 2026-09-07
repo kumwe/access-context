@@ -55,7 +55,8 @@
       "@test",
       "@release-record",
       "@security",
-      "@clean-consumer"
+      "@clean-consumer",
+      "@release:integrity"
     ],
     "clean-consumer": "php tools/verify-clean-consumer.php",
     "security": "composer audit --abandoned=fail",
@@ -64,7 +65,8 @@
       "@php examples/human-context.php",
       "@php examples/system-context.php",
       "@php examples/step-up-context.php"
-    ]
+    ],
+    "release:integrity": "bash tools/test-release-integrity.sh"
   },
   "config": {
     "sort-packages": true
