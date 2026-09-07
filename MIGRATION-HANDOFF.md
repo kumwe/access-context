@@ -1387,7 +1387,7 @@ blockers:
   - "Human merge, immutable publication and independent verification are future prerequisites."
 ---
 
-# Migration/implementation summary
+## Migration/implementation summary
 
 11 types; explicit principal/system ports, immutable scope values, proof/fingerprint/redaction semantics. Malformed
 UTF-8 identity rejection is now package-owned alongside the existing grammar, bounds and proof suites.
@@ -1403,7 +1403,7 @@ No Kumwe runtime dependencies. Context 0.1.1 remains the latest published versio
 the next human-reviewed release. [Current release/dependency observations](docs/readiness-review.md) supersede
 obsolete initial-extraction publication blockers. No independent attestation is fabricated.
 
-## Consumer inventory and drift check
+## Consumer inventory
 
 The source/consumer mappings above remain the adoption inventory. Compare every mapped file and public signature
 against the recorded full App baseline and current App before consumer changes. Any newer portable behavior goes
@@ -1421,7 +1421,12 @@ Review [PR #8](https://github.com/kumwe/access-context/pull/8), require its comp
 maintainer merge. Independently verify the published successor and exact dependency graph before App adoption.
 Existing published releases stay intact. This task does not implement the App runtime cutover.
 
-## Validation recipe
+## Drift check
+
+Reconcile mapped source and tests against the recorded App baseline and current App before any adoption.
+Newer portable behavior must move upstream first; preserve App authority, persistence and integration tests.
+
+## Validation recipe and observed local results
 
 Run `composer check` and the repository release automation regressions. Runtime suites, strict static analysis,
 coding standards, manifest/API checks and the no-dev authoritative archive consumer remain required. Final tested
