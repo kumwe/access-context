@@ -46,7 +46,7 @@ ownership:
     - path: resources/capabilities/v1.json
       sha256: fcd9597350e055c32b33ea442f51b952ba2621776a16069fa5ece318c909ea02
     - path: resources/service-map/v1.json
-      sha256: 7c7647997a28ad0cdb947ceda65e8391f6c13426a1278b25b458577b23e83c63
+      sha256: 88da845b4839b312723ec55bd5b1f3def42649683797e728d0ed6a124a8ab195
   intentionally_excluded:
     - "AuthenticatedPrincipal and SystemIdentity stay App-owned; implement the new neutral ports there."
     - "MembershipContextValidator, grants, capabilities, request attribute and SDK adapter remain App-owned."
