@@ -5,6 +5,13 @@ Publication follows only after the complete
 quality lane passes. The newest `## X.Y.Z` heading is the release record: merging it to `main` is the release, and the
 `Release on record` workflow tags and publishes exactly that version.
 
+## 0.1.1
+
+- NRM-2026-005: require protected main before publication and verify the exact release is published,
+  stable and immutable. Preserve existing tag ancestry and changelog checks; refuse mutable release metadata.
+- Record a successor to 0.1.0 with refreshed release manifests and handoff. Runtime code, public signatures
+  and the package/App test ownership split are unchanged. Maintainers enable protections before merging.
+
 ## 0.1.0
 
 - **Complete the unfinished extraction (`NRM-2026-005`).** Fix explicit-null manifest checks; reject a step-up

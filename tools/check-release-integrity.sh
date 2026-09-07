@@ -14,9 +14,9 @@ case "${1:-}" in
       echo 'Release verification requires one exact stable SemVer version.' >&2
       exit 1
     fi
-    if ! jq -e --arg tag "v$2" '
-      type == "object" and .tag_name == $tag and .draft == false and .prerelease == false
-      and .immutable == true and (.published_at | type == "string" and length > 0)
+    if ! jq -es --arg tag "v$2" '
+      length == 1 and (.[0] | type == "object" and .tag_name == $tag and .draft == false and .prerelease == false
+      and .immutable == true and (.published_at | type == "string" and length > 0))
     ' >/dev/null; then
       echo 'Release refused: exact version must be published, stable and immutable.' >&2
       exit 1

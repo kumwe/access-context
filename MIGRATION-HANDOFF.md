@@ -25,13 +25,13 @@ source:
     - "PHP 8.5: no Kumwe runtime dependency required."
     - "App composer.lock and governance legacy inventory; existing identity and SDK boundaries."
   active_related_pull_requests:
-    - https://github.com/kumwe/access-context/pull/2
+    - https://github.com/kumwe/access-context/pull/3
 target:
   repository: https://github.com/kumwe/access-context
   artifact_identity: kumwe/access-context
   canonical_namespace_or_abi: Kumwe\Context
-  branch: fix/access-context-extraction-completion
-  pull_request: https://github.com/kumwe/access-context/pull/2
+  branch: "fix/release-integrity-successor-20260907"
+  pull_request: "https://github.com/kumwe/access-context/pull/3"
 ownership:
   responsibility: "Immutable explicitly supplied actor, scope, authentication and execution facts."
   non_responsibilities:
@@ -42,11 +42,11 @@ ownership:
   next_consumer: kumwe/app
   public_manifests:
     - path: resources/public-api/v1.json
-      sha256: c750b339b2065be303e424dc604cee8dc58d2292addb8c8125fa73c41042bebd
+      sha256: c300602e137ab9179ce94a7f8d75537423b751465dbd70b3193b423e1a6b69d1
     - path: resources/capabilities/v1.json
-      sha256: def178c5ad983111016fb27be610c57e6719a86f52502dbf2e679afa7244de5b
+      sha256: cc72a46ef7657a99d4310c82a48b6be86947d2ff548b5144dee04a16c552307a
     - path: resources/service-map/v1.json
-      sha256: dd976feb7033d566773a730dcb5e3ac1f78bf68027204b48bf91f99138a041bb
+      sha256: bc3c4b4eed6db564d7e646ec86457f124a5c34a7043baabbca4e1885e96cc5a4
   intentionally_excluded:
     - "AuthenticatedPrincipal and SystemIdentity stay App-owned; implement the new neutral ports there."
     - "MembershipContextValidator, grants, capabilities, request attribute and SDK adapter remain App-owned."
@@ -1080,12 +1080,13 @@ documentation:
     - examples/human-context.php
     - examples/system-context.php
     - examples/step-up-context.php
-  changelog_record: "CHANGELOG.md ## 0.1.0"
+  changelog_record: "CHANGELOG.md ## 0.1.1"
 release_expectations:
-  version_policy: "SemVer; newest 0.1.0 changelog record; no published tag or artifact is claimed."
+  version_policy: "SemVer; 0.1.1 successor under D-GOV-6; fresh verification required after publication."
   expected_artifact_types:
     - "Composer library source archive"
   required_checks:
+    - "Protected main before publication; exact stable published release reports immutable true."
     - "composer check"
     - "PHP 8.5 CI and exact archive consumer"
     - "Independent source/tag/registry/artifact verification"
@@ -1094,6 +1095,7 @@ release_expectations:
 next_task:
   phase_name: "Independent release verification, then App Phase 2 adoption."
   permitted_only_when:
+    - "The release-integrity successor is published from protected main and independently verified."
     - "Maintainer merges this PR and immutable release-on-record completes."
     - "Fresh independent verifier provides a passing external RELEASE-ATTESTATION.yaml."
     - "App governance bootstrap remains merged and the extracted source drift check passes."
@@ -1431,3 +1433,15 @@ The exact 30-file ZIP installed as the sole dependency in an isolated authoritat
 public symbols and examples passed. The current App v2 PackageManifests loader also accepted this handoff.
 Local dependency auditing could not reach Packagist (network timeout); the mandatory audit remains in GitHub CI.
 No merge, release or App integration is claimed.
+
+## Release-integrity successor 0.1.1
+
+This PR follows the published 0.1.0 extraction and changes release automation and version-bound metadata only.
+The existing migration/change-set and NRM identifiers continue to name the same extraction. Runtime source,
+public method contracts, source baseline, consumer maps and the moved/retained test inventory are unchanged.
+
+Before merging, the maintainer protects main and enables GitHub immutable releases. The workflow refuses an
+unprotected release ref before tag/release mutation and verifies exact published immutable release metadata.
+The setting applies only to future releases. Keep 0.1.0 and its tag intact; never move, delete or replace them.
+A fresh independent verifier must attest the successor before dependent publication or App adoption.
+See docs/releasing.md for the setup and verification order.
