@@ -30,7 +30,7 @@ $failures = [];
  */
 function contextManifest(string $path, array &$failures): array
 {
-    global $root;
+    $root = dirname(__DIR__);
     $bytes = is_file($root . '/' . $path) ? file_get_contents($root . '/' . $path) : false;
     if ($bytes === false) {
         $failures[] = "{$path} is missing.";
@@ -62,7 +62,7 @@ $publicApi = contextManifest('resources/public-api/v1.json', $failures);
 $capabilities = contextManifest('resources/capabilities/v1.json', $failures);
 $serviceMap = contextManifest('resources/service-map/v1.json', $failures);
 
-$package = $composerJson['name'] ?? null;
+$package = is_string($composerJson['name'] ?? null) ? $composerJson['name'] : '';
 $autoload = $composerJson['autoload'] ?? null;
 $namespace = null;
 if (is_array($autoload) && is_array($autoload['psr-4'] ?? null) && count($autoload['psr-4']) === 1) {
@@ -218,6 +218,9 @@ if ($serviceMap !== []) {
 }
 
 $handoff = is_file($root . '/MIGRATION-HANDOFF.md') ? file_get_contents($root . '/MIGRATION-HANDOFF.md') : false;
+if ($handoff === false) {
+    $failures[] = 'MIGRATION-HANDOFF.md is required for release and App adoption.';
+}
 if ($handoff !== false) {
     if (!str_starts_with($handoff, "---\nschema: kumwe-migration-handoff/v2\n")) {
         $failures[] = 'MIGRATION-HANDOFF.md must open with the kumwe-migration-handoff/v2 front matter.';

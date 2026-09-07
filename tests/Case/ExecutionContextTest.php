@@ -36,6 +36,23 @@ use stdClass;
 final class ExecutionContextTest extends TestCase
 {
     /**
+     * Add the standard multi-factor arguments to a named fixture override.
+     *
+     * @param   array<string, mixed>  $overrides  Named context arguments to replace.
+     *
+     * @return  array<string, mixed>  Named arguments for the human factory fixture.
+     *
+     * @since   0.1.0
+     */
+    private function multi(array $overrides): array
+    {
+        return array_replace([
+            'authenticationStrength' => AuthenticationStrength::MultiFactor,
+            'sessionId' => 'session-77',
+        ], $overrides);
+    }
+
+    /**
      * Actor subject used across the case.
      *
      * @var    string
@@ -118,7 +135,7 @@ final class ExecutionContextTest extends TestCase
         /** @var array<string, mixed> $arguments */
         $arguments = array_replace($arguments, $overrides);
 
-        return new StepUpProof(...$arguments);
+        return (new ReflectionClass(StepUpProof::class))->newInstanceArgs($arguments);
     }
 
     /**
@@ -142,7 +159,12 @@ final class ExecutionContextTest extends TestCase
         /** @var array<string, mixed> $arguments */
         $arguments = array_replace($arguments, $overrides);
 
-        return ExecutionContext::issueHuman(...$arguments);
+        $context = (new \ReflectionMethod(ExecutionContext::class, 'issueHuman'))->invokeArgs(null, $arguments);
+        if (!$context instanceof ExecutionContext) {
+            throw new \RuntimeException('The context factory returned an invalid type.');
+        }
+
+        return $context;
     }
 
     /**
@@ -403,36 +425,34 @@ final class ExecutionContextTest extends TestCase
      */
     public function testProofMustMatchEveryBinding(): void
     {
-        $multi = static fn (array $overrides): array => array_replace([
-            'authenticationStrength' => AuthenticationStrength::MultiFactor,
-            'sessionId' => 'session-77',
-        ], $overrides);
         $refused = 'The step-up proof does not match the execution context.';
 
-        $bound = $this->human($multi(['stepUpProof' => $this->proof()]));
+        $bound = $this->human($this->multi(['stepUpProof' => $this->proof()]));
         $this->assertSame('session-77', $bound->stepUpProof()?->sessionId(), 'A matching proof is carried.');
 
         $mismatches = [
-            'actor' => $multi(['stepUpProof' => $this->proof(['actorId' => '018f22e2-7c8b-7ab0-8f3a-88e8026bb399'])]),
-            'session missing' => $multi(['sessionId' => null, 'stepUpProof' => $this->proof()]),
-            'session other' => $multi(['sessionId' => 'session-78', 'stepUpProof' => $this->proof()]),
-            'site' => $multi(['site' => SiteContext::fromString('shop'), 'stepUpProof' => $this->proof()]),
-            'organization on proof only' => $multi([
+            'actor' => $this->multi([
+                'stepUpProof' => $this->proof(['actorId' => '018f22e2-7c8b-7ab0-8f3a-88e8026bb399']),
+            ]),
+            'session missing' => $this->multi(['sessionId' => null, 'stepUpProof' => $this->proof()]),
+            'session other' => $this->multi(['sessionId' => 'session-78', 'stepUpProof' => $this->proof()]),
+            'site' => $this->multi(['site' => SiteContext::fromString('shop'), 'stepUpProof' => $this->proof()]),
+            'organization on proof only' => $this->multi([
                 'stepUpProof' => $this->proof(['organization' => OrganizationContext::fromString('acme')]),
             ]),
-            'organization on membership only' => $multi([
+            'organization on membership only' => $this->multi([
                 'membership' => $this->membership('acme'),
                 'stepUpProof' => $this->proof(),
             ]),
-            'organization differs' => $multi([
+            'organization differs' => $this->multi([
                 'membership' => $this->membership('acme'),
                 'stepUpProof' => $this->proof(['organization' => OrganizationContext::fromString('other')]),
             ]),
-            'workspace' => $multi([
+            'workspace' => $this->multi([
                 'membership' => $this->membership('acme', 'finance'),
                 'stepUpProof' => $this->proof(['organization' => OrganizationContext::fromString('acme')]),
             ]),
-            'epoch' => $multi(['stepUpProof' => $this->proof(['securityEpoch' => 2])]),
+            'epoch' => $this->multi(['stepUpProof' => $this->proof(['securityEpoch' => 2])]),
         ];
         foreach ($mismatches as $name => $arguments) {
             $this->assertRefused(
@@ -442,7 +462,7 @@ final class ExecutionContextTest extends TestCase
             );
         }
 
-        $scoped = $this->human($multi([
+        $scoped = $this->human($this->multi([
             'membership' => $this->membership('acme', 'finance'),
             'stepUpProof' => $this->proof([
                 'organization' => OrganizationContext::fromString('acme'),

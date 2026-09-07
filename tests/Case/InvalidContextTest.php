@@ -32,7 +32,10 @@ final class InvalidContextTest extends TestCase
     public function testIsAFinalInvalidArgumentException(): void
     {
         $error = new InvalidContext('A rule was broken.');
-        $this->assertTrue($error instanceof InvalidArgumentException, 'Extends InvalidArgumentException.');
+        $this->assertTrue(
+            (new ReflectionClass(InvalidContext::class))->isSubclassOf(InvalidArgumentException::class),
+            'Extends InvalidArgumentException.',
+        );
         $this->assertSame('A rule was broken.', $error->getMessage(), 'Message preserved.');
         $this->assertTrue((new ReflectionClass(InvalidContext::class))->isFinal(), 'Final.');
     }

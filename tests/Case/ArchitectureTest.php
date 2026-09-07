@@ -95,13 +95,13 @@ final class ArchitectureTest extends TestCase
                 "{$fqcn} is final, an interface or an enum.",
             );
             $this->assertFalse($reflection->isTrait(), "{$fqcn} is not a trait.");
-            if ($reflection->isEnum()) {
+            if (enum_exists($fqcn)) {
                 $this->assertTrue((new \ReflectionEnum($fqcn))->isBacked(), "{$fqcn} is backed.");
             }
             foreach ($reflection->getInterfaceNames() as $interface) {
                 $this->assertTrue(
                     str_starts_with($interface, 'Kumwe\\Context\\')
-                        || in_array($interface, ['UnitEnum', 'BackedEnum'], true),
+                        || in_array($interface, ['UnitEnum', 'BackedEnum', 'Stringable', 'Throwable'], true),
                     "{$fqcn} implements only package contracts or engine enum interfaces.",
                 );
             }

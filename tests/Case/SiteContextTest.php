@@ -26,6 +26,26 @@ use TypeError;
 final class SiteContextTest extends TestCase
 {
     /**
+     * Control bytes cannot disappear through whitespace normalization.
+     *
+     * @return  void
+     *
+     * @since   0.1.0
+     */
+    public function testRejectsControlBytesBeforeNormalization(): void
+    {
+        foreach (["\x00", "\t", "\n", "\r", "\x7f"] as $control) {
+            foreach ([$control . 'scope', 'scope' . $control] as $identifier) {
+                $this->assertRefused(
+                    static fn (): SiteContext => SiteContext::fromString($identifier),
+                    'A site context must be a valid non-empty identifier.',
+                    'Control bytes must be rejected before normalization.',
+                );
+            }
+        }
+    }
+
+    /**
      * Identifiers are trimmed and lowercased, and the whole documented alphabet is admitted up to 191 characters.
      *
      * @return  void
@@ -138,9 +158,12 @@ final class SiteContextTest extends TestCase
         $organization = OrganizationContext::fromString('acme');
 
         $this->assertSame($site->identifier(), $organization->identifier(), 'The spelling is shared.');
-        $this->assertFalse($site instanceof OrganizationContext, 'A site is not an organization.');
+        $this->assertFalse(
+            (new ReflectionClass(OrganizationContext::class))->isInstance($site),
+            'A site is not an organization.',
+        );
         $this->assertThrows(
-            static fn (): bool => $site->equals($organization),
+            static fn (): mixed => (new \ReflectionMethod($site, 'equals'))->invoke($site, $organization),
             TypeError::class,
             'Comparing a site with an organization is a type error, not a false.',
         );

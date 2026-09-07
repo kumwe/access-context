@@ -10,6 +10,7 @@ namespace Kumwe\Context\Contract;
  * Work that runs with no operator present still has to name who is acting. The host owns the closed set of
  * such actors and the authority each one carries; this contract only makes the choice explicit, so a system
  * context can never be mistaken for a signed-in person and audit records name one stable token per actor.
+ * The implementation and its identifier must remain immutable for the lifetime of the unit of work.
  * `ExecutionContext::issueSystem()` validates the identifier before trusting an implementation.
  *
  * @since  0.1.0

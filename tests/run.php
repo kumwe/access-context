@@ -62,7 +62,7 @@ foreach ($files as $file) {
         $totalTests++;
         $ran++;
         try {
-            $case->{$method}();
+            (new ReflectionMethod($case, $method))->invoke($case);
         } catch (Throwable $error) {
             $failures[] = sprintf(
                 '%s::%s - %s (%s:%d)',

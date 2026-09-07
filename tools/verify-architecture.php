@@ -94,9 +94,9 @@ foreach ($files as $path) {
             $failures[] = "{$relative} imports a namespace outside the package: {$import}.";
         }
     }
-    foreach ($forbiddenNamespaces as $namespace) {
-        if (str_contains($code, $namespace)) {
-            $failures[] = "{$relative} references the forbidden namespace {$namespace}.";
+    foreach ($forbiddenNamespaces as $forbiddenNamespace) {
+        if (str_contains($code, $forbiddenNamespace)) {
+            $failures[] = "{$relative} references the forbidden namespace {$forbiddenNamespace}.";
         }
     }
     foreach ($forbiddenCalls as $call) {

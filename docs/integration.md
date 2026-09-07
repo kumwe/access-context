@@ -6,6 +6,8 @@ Provenance compares exact object identity. Both fingerprint methods return lower
 credential plus effective authority, the other stays stable across session rotation of unchanged authority.
 Implement SystemActor over the host's closed set of approved unattended identities. Identifiers follow the same
 non-empty/control-free bound. Neither contract authenticates or authorizes its implementation.
+Both implementations must remain immutable throughout a unit of work; readonly context fields do not freeze
+the internal state of host-supplied objects.
 
 Mint contexts once at the trusted host boundary and supply them to application operations. Browser request attributes
 and any SDK ExecutionContext implementation belong to an App adapter; do not register historical class aliases.

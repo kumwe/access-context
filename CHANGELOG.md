@@ -11,13 +11,15 @@ quality lane passes. The newest `## X.Y.Z` heading is the release record: mergin
   workspace without its enclosing organization; clarify that proof freshness checks are not authorization.
   Supply the missing charter, complete member/API documentation, security/release guidance and PR-linked handoff.
   Add the full CI/release lane and exact built archive installed as a dependency in an isolated no-dev consumer.
-  Repair the pre-existing style/line-width failures rather than weakening the existing gates.
+  Reject raw scope control bytes before trim can erase them; preserve normalization for valid space-padded values.
+  Repair the pre-existing style/line-width and strict-analysis failures rather than weakening the existing gates.
 
 - **Extraction of the canonical access context from kumwe/app (`KUMWE-MIG-2026-004`).** The site,
   organization, workspace and membership values, the authenticated-surface and authentication-strength
   vocabularies, the step-up proof and the execution context moved from `Kumwe\App\Application\Authorization\*`
-  to `Kumwe\Context\Value\*` with their grammars, invariants, refusal messages and fingerprints preserved byte
-  for byte. App keeps authentication, sessions, tokens, grants, membership lookup, site selection, the closed
+  to `Kumwe\Context\Value\*` with their identifier grammars, refusal messages and fingerprints retained,
+  subject to the explicitly documented input and proof hardening above. App keeps authentication, sessions,
+  tokens, grants, membership lookup, site selection, the closed
   set of system identities and every authorization decision.
 - **The Authorization-Identity cycle is broken by two contracts.** `Kumwe\Context\Contract\Principal` exposes
   the subject, security epoch, provenance check and the two authority fingerprints an execution context and a

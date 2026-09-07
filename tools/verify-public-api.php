@@ -298,7 +298,7 @@ function contextApiConstants(ReflectionClass $type, string $owner): array
 {
     $constants = [];
     $backing = null;
-    if ($type->isEnum()) {
+    if (enum_exists($owner)) {
         $backingType = (new ReflectionEnum($owner))->getBackingType();
         $backing = $backingType === null ? null : contextApiReflectionType($backingType, $owner);
     }

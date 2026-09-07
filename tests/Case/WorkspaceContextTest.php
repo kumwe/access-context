@@ -24,6 +24,26 @@ use TypeError;
 final class WorkspaceContextTest extends TestCase
 {
     /**
+     * Control bytes cannot disappear through whitespace normalization.
+     *
+     * @return  void
+     *
+     * @since   0.1.0
+     */
+    public function testRejectsControlBytesBeforeNormalization(): void
+    {
+        foreach (["\x00", "\t", "\n", "\r", "\x7f"] as $control) {
+            foreach ([$control . 'scope', 'scope' . $control] as $identifier) {
+                $this->assertRefused(
+                    static fn (): WorkspaceContext => WorkspaceContext::fromString($identifier),
+                    'A workspace context must be a valid non-empty identifier.',
+                    'Control bytes must be rejected before normalization.',
+                );
+            }
+        }
+    }
+
+    /**
      * Identifiers are trimmed and lowercased under the shared scope grammar.
      *
      * @return  void
@@ -78,7 +98,7 @@ final class WorkspaceContextTest extends TestCase
         $workspace = WorkspaceContext::fromString('acme');
         $organization = OrganizationContext::fromString('acme');
         $this->assertThrows(
-            static fn (): bool => $workspace->equals($organization),
+            static fn (): mixed => (new \ReflectionMethod($workspace, 'equals'))->invoke($workspace, $organization),
             TypeError::class,
             'A workspace cannot be compared with an organization.',
         );

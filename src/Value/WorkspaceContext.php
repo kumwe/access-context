@@ -43,7 +43,8 @@ final readonly class WorkspaceContext
      *
      * @return  self  Validated workspace context.
      *
-     * @throws  InvalidContext  When the normalised value is empty, runs past 191 characters, starts with
+     * @throws  InvalidContext  When raw input contains control characters, or the normalized value is empty,
+     *          runs past 191 characters, starts with
      *          something other than a lowercase letter or digit, or holds a character outside `a-z`, `0-9`,
      *          `.`, `_`, `:` and `-`.
      *
@@ -51,6 +52,9 @@ final readonly class WorkspaceContext
      */
     public static function fromString(string $identifier): self
     {
+        if (preg_match('/[\x00-\x1F\x7F]/', $identifier) === 1) {
+            throw new InvalidContext('A workspace context must be a valid non-empty identifier.');
+        }
         $identifier = strtolower(trim($identifier));
 
         if (preg_match(self::GRAMMAR, $identifier) !== 1) {
