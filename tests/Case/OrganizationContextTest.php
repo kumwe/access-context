@@ -25,6 +25,26 @@ use TypeError;
 final class OrganizationContextTest extends TestCase
 {
     /**
+     * Control bytes cannot disappear through whitespace normalization.
+     *
+     * @return  void
+     *
+     * @since   0.1.0
+     */
+    public function testRejectsControlBytesBeforeNormalization(): void
+    {
+        foreach (["\x00", "\t", "\n", "\r", "\x7f"] as $control) {
+            foreach ([$control . 'scope', 'scope' . $control] as $identifier) {
+                $this->assertRefused(
+                    static fn (): OrganizationContext => OrganizationContext::fromString($identifier),
+                    'An organization context must be a valid non-empty identifier.',
+                    'Control bytes must be rejected before normalization.',
+                );
+            }
+        }
+    }
+
+    /**
      * Identifiers are trimmed and lowercased under the shared scope grammar.
      *
      * @return  void
@@ -81,11 +101,14 @@ final class OrganizationContextTest extends TestCase
         $organization = OrganizationContext::fromString('acme');
         $site = SiteContext::fromString('acme');
         $this->assertThrows(
-            static fn (): bool => $organization->equals($site),
+            static fn (): mixed => (new \ReflectionMethod($organization, 'equals'))->invoke($organization, $site),
             TypeError::class,
             'An organization cannot be compared with a site.',
         );
-        $this->assertFalse($organization instanceof SiteContext, 'An organization is not a site.');
+        $this->assertFalse(
+            (new ReflectionClass(SiteContext::class))->isInstance($organization),
+            'An organization is not a site.',
+        );
     }
 
     /**

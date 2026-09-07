@@ -82,7 +82,11 @@ final class PublicManifestsTest extends TestCase
             $this->assertSame('stable', $entry['stability'] ?? null, "{$fqcn} is stable.");
             $this->assertTrue(array_key_exists('deprecated', $entry), "{$fqcn} declares deprecation state.");
             $this->assertNull($entry['deprecated'], "{$fqcn} is not deprecated.");
-            $this->assertTrue(is_file($root . '/' . ($entry['file'] ?? '')), "{$fqcn} names its file.");
+            $file = $entry['file'] ?? null;
+            if (!is_string($file)) {
+                throw new \RuntimeException('An exported symbol must name its source file.');
+            }
+            $this->assertTrue(is_file($root . '/' . $file), "{$fqcn} names its file.");
         }
         $this->assertSame(
             ['Kumwe\\Context\\Contract\\Principal', 'Kumwe\\Context\\Contract\\SystemActor'],
@@ -115,6 +119,9 @@ final class PublicManifestsTest extends TestCase
             $id = is_array($entry) ? ($entry['id'] ?? null) : null;
             $this->assertTrue(is_string($id) && str_starts_with($id, 'access-context.'), 'Prefixed identifier.');
             foreach (is_array($entry) && is_array($entry['symbols'] ?? null) ? $entry['symbols'] : [] as $symbol) {
+                if (!is_string($symbol)) {
+                    throw new \RuntimeException('A capability symbol must be a string.');
+                }
                 $this->assertFalse(isset($claimed[$symbol]), "{$symbol} is claimed once.");
                 $claimed[$symbol] = true;
             }
@@ -158,10 +165,9 @@ final class PublicManifestsTest extends TestCase
     public function testReleaseIsTheNewestChangelogRecord(): void
     {
         $changelog = (string) file_get_contents(dirname(__DIR__, 2) . '/CHANGELOG.md');
-        $this->assertTrue(
-            preg_match('/^## ([0-9]+\.[0-9]+\.[0-9]+)$/m', $changelog, $match) === 1,
-            'The changelog records a release heading.',
-        );
+        if (preg_match('/^## ([0-9]+\.[0-9]+\.[0-9]+)$/m', $changelog, $match) !== 1) {
+            throw new \RuntimeException('The changelog must record a release heading.');
+        }
         foreach (['public-api', 'capabilities', 'service-map'] as $manifest) {
             $this->assertSame(
                 $match[1],

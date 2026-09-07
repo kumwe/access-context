@@ -22,3 +22,6 @@ orphan-workspace proof refusal is a defensive consistency correction, not a new 
 
 Class/unit tests, public API reflection, architecture checks and built-archive consumer verification run here.
 The App adoption must retain database/transaction/authorization/delivery tests and delete only package-owned units.
+
+Raw control bytes in site, organization and workspace inputs are rejected before whitespace normalization.
+This includes leading/trailing NUL, tabs, newlines, carriage returns and DEL; valid space-padded values still normalize.

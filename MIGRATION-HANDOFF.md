@@ -166,7 +166,7 @@ framework_php:
       exceptions:
         - Kumwe\Context\Exception\InvalidContext
       serialization_contract: "Explicit redacted exports; preserve established fingerprints and scalar vocabulary."
-      compatibility: "Preserved with additive equality/export helpers."
+      compatibility: "Reject raw control bytes before normalization; preserve canonical identifiers."
     - old_fqcn: Kumwe\App\Application\Authorization\SiteContext
       new_fqcn: Kumwe\Context\Value\SiteContext
       source_path: src/Application/Authorization/SiteContext.php
@@ -183,7 +183,7 @@ framework_php:
       exceptions:
         - Kumwe\Context\Exception\InvalidContext
       serialization_contract: "Explicit redacted exports; preserve established fingerprints and scalar vocabulary."
-      compatibility: "Preserved with additive equality/export helpers."
+      compatibility: "Reject raw control bytes before normalization; preserve canonical identifiers."
     - old_fqcn: Kumwe\App\Application\Authorization\StepUpProof
       new_fqcn: Kumwe\Context\Value\StepUpProof
       source_path: src/Application/Authorization/StepUpProof.php
@@ -224,7 +224,7 @@ framework_php:
       exceptions:
         - Kumwe\Context\Exception\InvalidContext
       serialization_contract: "Explicit redacted exports; preserve established fingerprints and scalar vocabulary."
-      compatibility: "Preserved with additive equality/export helpers."
+      compatibility: "Reject raw control bytes before normalization; preserve canonical identifiers."
   consumers:
     app_code:
       - src/Administrator/Http/AdministratorRequest.php
@@ -1380,6 +1380,7 @@ decisions:
   - "Eight mapped values plus three new declarations give eleven public symbols."
   - "Capabilities/grants stay outside this closure; no copied identity model or dependency expansion."
   - "StepUpProof rejects a workspace without an organization and documents host-only action checks."
+  - "Reject raw scope control bytes before trim can erase them; retain valid identifier normalization."
 blockers:
   - "Human merge, immutable publication and independent verification are future prerequisites."
 ---
@@ -1424,4 +1425,9 @@ Route newer portable behavior to a successor package release; preserve App-speci
 
 Run composer check on PHP 8.5 with mbstring, tokenizer, XMLWriter and ZIP tooling.
 The lane verifies the built archive as an isolated dependency, then uses only its authoritative consumer autoloader.
-Final observed results are recorded in the PR after the handoff commit; no merge, release or App integration is claimed.
+Observed on PHP 8.5.10 / Composer 2.10.3: 63 tests / 914 assertions and 12 release-record cases passed;
+strict analysis, style, syntax, member docs, architecture, API/manifests and three autoloaded examples passed.
+The exact 30-file ZIP installed as the sole dependency in an isolated authoritative no-dev consumer; all eleven
+public symbols and examples passed. The current App v2 PackageManifests loader also accepted this handoff.
+Local dependency auditing could not reach Packagist (network timeout); the mandatory audit remains in GitHub CI.
+No merge, release or App integration is claimed.

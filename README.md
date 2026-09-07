@@ -105,3 +105,6 @@ runtime dependencies of the value package. `composer clean-consumer` runs the ar
 The initial extraction is incomplete until this PR passes, is human-merged, and its release is independently verified.
 [Releasing and compatibility](docs/releasing.md) describes immutable release-on-record and exact pre-1.0 pins.
 [Security policy](docs/security.md) describes sensitive data and reporting. Apache-2.0; see [LICENSE](LICENSE).
+
+Raw control bytes in site, organization and workspace inputs are rejected before whitespace normalization.
+This includes leading/trailing NUL, tabs, newlines, carriage returns and DEL; valid space-padded values still normalize.

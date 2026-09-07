@@ -85,7 +85,7 @@ final class StepUpProofTest extends TestCase
         /** @var array<string, mixed> $arguments */
         $arguments = array_replace($arguments, $overrides);
 
-        return new StepUpProof(...$arguments);
+        return (new ReflectionClass(StepUpProof::class))->newInstanceArgs($arguments);
     }
 
     /**
