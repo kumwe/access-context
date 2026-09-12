@@ -14,21 +14,21 @@ future release identity. The newest stable SemVer changelog record selects the
 version and must agree with the release manifests. An Unreleased-only changelog
 does not publish; keep work that is not ready under `## Unreleased`.
 
-Package compatibility follows SemVer. During pre-1.0 migration, consumers exact-pin
+Package compatibility follows SemVer. During pre-1.0 development, consumers exact-pin
 independently verified releases.
 
 ## Artifact and consumer verification
 
-The source archive includes the charter, handoff, public docs and examples, all
+The source archive includes the charter, release record, public docs and examples, all
 three manifests and production sources. The consumer gate verifies its exact file
 set and checksums, installs it as a dependency with Packagist disabled, no development
 dependencies and authoritative autoloading, then resolves all public symbols and
 runs every shipped example. Package checkout tests do not replace this proof.
 
 Keep the independent attestation outside the artifact it hashes. Do not insert that
-attestation's own digest into the handoff or republish to do so. The App adoption PR
-retains the attestation unchanged and compares its extraction baseline before
-removing classes. Portable implementation tests remain package-owned; the handoff's
+attestation's own digest into the release record or republish to do so. The App adoption PR
+retains the attestation unchanged and compares its recorded source baseline before
+removing classes. Portable implementation tests remain package-owned; the Core contract's
 App integration/security test retention and later duplicate-test removal rules remain.
 
 A host rollback restores its previously tested exact dependency tuple. Security
@@ -36,14 +36,14 @@ changes follow the reporting policy and require a corrected successor release.
 
 ## Publication evidence and recovery
 
-The maintainer performs the initial Packagist submission. Its GitHub integration
-then follows tags without a registry credential in CI. Confirm `package-released`
+The package is registered on Packagist. Its GitHub integration follows tags without a registry credential in CI.
+Confirm `package-released`
 from the successful default-branch publication run and matching published stable
 release, tag and source identity. Publication does not establish `release-verified`.
 Before declaring that state or SDK/App adoption, a fresh independent verifier must
 bind the exact published source/tag, archive digest, manifests, registry coordinate,
 license/security and clean-consumer results in an external RELEASE-ATTESTATION.yaml.
-The artifact and handoff must not invent their own final commit, checksum or
+The artifact and release record must not invent their own final commit, checksum or
 publication evidence. This attestation is separate from normal publication.
 
 Use the current release workflow on the default branch to retry after correcting

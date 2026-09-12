@@ -1,9 +1,8 @@
 ---
-schema: kumwe-migration-handoff/v2
+schema: kumwe-package-release-record/v1
 artifact_kind: framework_php
 migration_id: KUMWE-MIG-2026-004
 change_set: KUMWE-CS-2026-004
-state: draft_pr_open
 source:
   app:
     repository: https://github.com/kumwe/app
@@ -24,14 +23,10 @@ source:
   examined_dependencies:
     - "PHP 8.5: no Kumwe runtime dependency required."
     - "App composer.lock and governance legacy inventory; existing identity and SDK boundaries."
-  active_related_pull_requests:
-    - https://github.com/kumwe/access-context/pull/3
 target:
   repository: https://github.com/kumwe/access-context
   artifact_identity: kumwe/access-context
   canonical_namespace_or_abi: Kumwe\Context
-  branch: codex/extraction-readiness-20260907
-  pull_request: https://github.com/kumwe/access-context/pull/8
 ownership:
   responsibility: "Immutable explicitly supplied actor, scope, authentication and execution facts."
   non_responsibilities:
@@ -582,7 +577,7 @@ framework_php:
       - src/Kernel/ContainerFactory.php
       - tests/Unit/Extension/Runtime/RestrictedExtensionContainerTest.php
     reflection_and_string_references:
-      - "docs/migration-consumers.json inventories exact source/config/escaped-string references."
+      - "docs/core-consumers.json inventories exact source/config/escaped-string references."
     fixtures_and_examples:
       - tests/Fixtures/Governance/clean/docs/architecture/layers.json
       - tests/Functional/BusinessSurface/GeneratedBusinessAdapterParityTest.php
@@ -1082,23 +1077,21 @@ documentation:
     - examples/step-up-context.php
   changelog_record: "CHANGELOG.md ## 0.1.2"
 release_expectations:
-  version_policy: "SemVer; 0.1.1 successor under D-GOV-6; fresh verification required after publication."
+  version_policy: "SemVer; exact pre-1.0 consumer pins and independent verification of published artifacts."
   expected_artifact_types:
     - "Composer library source archive"
   required_checks:
-    - "Protected main before publication; exact stable published release reports immutable true."
+    - "Stable published release, tag and Composer source identity must agree."
     - "composer check"
     - "PHP 8.5 CI and exact archive consumer"
     - "Independent source/tag/registry/artifact verification"
-  required_registry_or_installer: "Composer / Packagist after maintainer first submission"
+  required_registry_or_installer: "Composer / Packagist"
   required_external_attestation: true
-next_task:
-  phase_name: "Independent release verification, then App Phase 2 adoption."
+consumer_contract:
   permitted_only_when:
-    - "The release-integrity successor is published from protected main and independently verified."
-    - "Maintainer merges this PR and immutable release-on-record completes."
-    - "Fresh independent verifier provides a passing external RELEASE-ATTESTATION.yaml."
-    - "App governance bootstrap remains merged and the extracted source drift check passes."
+    - "The selected release passes the complete package and clean-consumer gates."
+    - "Independent verification binds the published release, source, archive and manifests."
+    - "Core reconciles the recorded source baseline with its current implementation and tests."
   consumer_repository: kumwe/app
   dependency_or_native_change: "Require the exact verified pre-1.0 kumwe/access-context release through Composer."
   namespace_or_api_replacements:
@@ -1108,8 +1101,7 @@ next_task:
     - composer.json
     - composer.lock
     - src/Kernel/ContainerFactory.php
-    - docs/architecture/migrations/
-    - "docs/migration-consumers.json lists exact App consumers for the baseline."
+    - "docs/core-consumers.json lists exact App consumers for the baseline."
   files_to_remove:
     - src/Application/Authorization/AuthenticatedSurface.php
     - src/Application/Authorization/AuthenticationStrength.php
@@ -1353,81 +1345,61 @@ next_task:
   capability_index_changes:
     - "Generate the six access-context capabilities from the exact installed manifests."
   changelog_and_evidence_changes:
-    - "Update NRM-2026-005, MIG004/CS004 evidence, immutable attestation and serialized integration train."
+    - "Record the exact dependency tuple, independent release evidence and Core integration validation."
   verification_commands:
     - "composer qa"
     - "composer kumwe:capability-index-check"
     - "composer kumwe:core-growth-check"
     - "Supported App database, authorization, lifecycle, deployment and recovery suites."
-concurrency:
-  likely_conflict_files:
-    - composer.json
-    - composer.lock
-    - src/Kernel/ContainerFactory.php
-    - build/capability-index/v1.json
-    - CHANGELOG.md
-  related_migrations: []
-  ownership_conflicts: []
-  integration_train: null
-  resolution_rule: semantic-preservation
 governance:
-  roadmap_source_sha256: a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8
-  roadmap_refs: []
-  non_roadmap_refs:
-    - NRM-2026-005
   completion_claim: false
 decisions:
-  - "Preserve MIG004 from the existing extraction; this PR completes its unfinished package evidence."
   - "Principal/SystemActor/InvalidContext are new portable declarations, not copied App concrete identities."
   - "Eight mapped values plus three new declarations give eleven public symbols."
   - "Capabilities/grants stay outside this closure; no copied identity model or dependency expansion."
   - "StepUpProof rejects a workspace without an organization and documents host-only action checks."
   - "Reject raw scope control bytes before trim can erase them; retain valid identifier normalization."
-blockers:
-  - "Human merge, immutable publication and independent verification are future prerequisites."
+blockers: []
 ---
 
-## Migration/implementation summary
+# Access Context release record
 
-11 types; explicit principal/system ports, immutable scope values, proof/fingerprint/redaction semantics. Malformed
-UTF-8 identity rejection is now package-owned alongside the existing grammar, bounds and proof suites.
+This machine-readable contract retains source provenance, public manifests, Core consumer mappings and test
+ownership. It records compatibility and verification requirements; publication evidence is external.
+
+## Package contract
+
+Immutable actor, scope, authentication and execution facts under `Kumwe\Context`. See the [charter](../CHARTER.md).
 
 ## Public API and responsibility
 
-The symbol map above and [public API](docs/public-api.md) define every exported contract.
-[Architecture](docs/architecture.md) and [integration](docs/integration.md) retain the host boundaries.
+The [public API](public-api.md) and [Core contract](core-contract.md) define package and host responsibilities.
 
-## Capability reuse/semantic input review
+## Dependencies and semantic inputs
 
-No Kumwe runtime dependencies. Context 0.1.1 remains the latest published version; this review records 0.1.2 for
-the next human-reviewed release. [Current release/dependency observations](docs/readiness-review.md) supersede
-obsolete initial-extraction publication blockers. No independent attestation is fabricated.
+PHP 8.5 or later in the supported PHP 8 series; no runtime package dependencies.
 
-## Consumer inventory
+## Consumer contract
 
-The source/consumer mappings above remain the adoption inventory. Compare every mapped file and public signature
-against the recorded full App baseline and current App before consumer changes. Any newer portable behavior goes
-upstream first. Preserve App authority, adapters and workflows.
+The [consumer inventory](core-consumers.json) records paths at the explicit source baseline. Reconcile those paths
+with current Core code before changing dependency composition or removing duplicate implementations.
 
 ## Test ownership
 
-Package tests own portable behavior, boundary/conformance, API and construction. App retains actual authorization,
-transaction atomicity, persistence, concurrency, recovery and delivery tests. Remove only duplicate portable
-implementation tests during the separate verified adoption.
+The package owns portable behavior and boundary tests. Core retains authorization, transaction, database, delivery,
+concurrency and recovery integration tests. See [test ownership](test-ownership.md).
 
-## Next-task execution notes
+## Consumer verification
 
-Review [PR #8](https://github.com/kumwe/access-context/pull/8), require its complete package gate, then let the
-maintainer merge. Independently verify the published successor and exact dependency graph before App adoption.
-Existing published releases stay intact. This task does not implement the App runtime cutover.
+Exact-pin a verified published release, regenerate the host lockfile and run the retained host integration suites.
+[Release guidance](releasing.md) defines source/archive/registry identity and independent verification.
 
-## Drift check
+## Compatibility and drift
 
-Reconcile mapped source and tests against the recorded App baseline and current App before any adoption.
-Newer portable behavior must move upstream first; preserve App authority, persistence and integration tests.
+Current Core behavior must be reconciled against the recorded baseline before replacing imports or test owners.
+Portable behavior changes belong in a successor package release; Core keeps authority and persistence.
 
-## Validation recipe and observed local results
+## Validation
 
-Run `composer check` and the repository release automation regressions. Runtime suites, strict static analysis,
-coding standards, manifest/API checks and the no-dev authoritative archive consumer remain required. Final tested
-source and archive identities belong in external CI/attestation evidence.
+Run `composer check` and the release automation regression suites. A passing package gate does not itself prove
+publication or successful Core integration.

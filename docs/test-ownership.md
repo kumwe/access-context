@@ -23,7 +23,7 @@ executes the test callbacks.
 - Authentication/session/token resolution, trusted system actors, membership lookup, disabled users and
 request/site composition.
 
-No complete App test file is authorized for deletion by this record; consult the released migration handoff for
+No complete App test file is authorized for deletion by this record; consult the released Core contract for
 mixed consumer responsibilities. Remove a duplicate App implementation test only when its old production
 implementation is removed during verified adoption. App retains its own integration assertions and does not execute
 package test files from vendor.
