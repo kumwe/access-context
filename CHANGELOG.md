@@ -1,10 +1,16 @@
 # Changelog
 
-Delivered package changes, newest first. Records describe the candidate release and its required proof.
+Delivered package changes, newest first. Records describe package changes and their required proof.
 Publication follows only after the complete
 quality lane passes. The newest `## X.Y.Z` heading is the release record: merging it to `main` is the release, and
 the
 `Release on record` workflow tags and publishes exactly that version.
+
+## Unreleased
+
+- Standardize linked package, CI, PHP and license badges and current installation guidance.
+- Replace obsolete process documents with the Core contract, consumer inventory and package release record.
+- Update manifest and archive verification for the maintained release record without changing runtime behavior.
 
 ## 0.1.2
 

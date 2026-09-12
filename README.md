@@ -1,5 +1,17 @@
 # Kumwe Access Context
 
+[![Packagist version][version-badge]][package]
+[![Context CI][ci-badge]][ci]
+[![PHP requirement][php-badge]][package]
+[![License][license-badge]](LICENSE)
+
+[version-badge]: https://img.shields.io/packagist/v/kumwe/access-context
+[package]: https://packagist.org/packages/kumwe/access-context
+[ci-badge]: https://github.com/kumwe/access-context/actions/workflows/ci.yml/badge.svg?branch=main
+[ci]: https://github.com/kumwe/access-context/actions/workflows/ci.yml
+[php-badge]: https://img.shields.io/packagist/dependency-v/kumwe/access-context/php
+[license-badge]: https://img.shields.io/packagist/l/kumwe/access-context
+
 Immutable access-context values and actor contracts, supplied explicitly for each unit of work.
 Requires PHP 8.5. The canonical namespace is `Kumwe\Context`; there are no runtime package dependencies.
 
@@ -9,10 +21,10 @@ It does not provide grants, capability policies, credentials, sessions, persiste
 
 ## Installation and standalone use
 
-After the first verified release is available on Packagist:
+Install the published Composer package. Pin the selected pre-1.0 version for a reproducible host deployment:
 
 ```sh
-composer require kumwe/access-context:0.1.0
+composer require kumwe/access-context:0.1.2
 ```
 
 For the source checkout, run `composer install`, then this complete example:
@@ -72,7 +84,8 @@ exports.
 - `InvalidContext`: consistent argument refusal; messages identify the rule without echoing submitted input.
 
 [Complete public API](docs/public-api.md), [architecture](docs/architecture.md),
-[integration and adoption](docs/integration.md), [migration handoff](MIGRATION-HANDOFF.md).
+[host integration](docs/integration.md), [Core contract](docs/core-contract.md),
+[release record](docs/release-record.md).
 The three manifests under `resources/` record every exported symbol, semantic capability and provider decision.
 
 ## Guarantees and limits
@@ -107,8 +120,8 @@ consumer.
 The tooling additionally needs mbstring, tokenizer, XMLWriter and ZIP; these are development requirements, not
 runtime dependencies of the value package. `composer clean-consumer` runs the artifact check separately.
 
-The portable extraction is implemented and 0.1.1 is published. This successor hardens serializable identities;
-its human review, publication and independent release verification remain required before App adoption.
+Published versions and source CI status are linked above. Core integration is verified in the consuming
+repository against its selected package version and retained integration suites.
 [Releasing and compatibility](docs/releasing.md) describes immutable release-on-record and exact pre-1.0 pins.
 [Security policy](docs/security.md) describes sensitive data and reporting. Apache-2.0; see [LICENSE](LICENSE).
 
